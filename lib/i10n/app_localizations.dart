@@ -20,6 +20,12 @@ class AppLocalizations {
       Localizations.of<AppLocalizations>(context, AppLocalizations);
 
   String get title => Intl.message('TO-DO', name: 'title');
+
+  String get todoList => Intl.message('TO-DO List', name: 'todoList');
+
+  String get statistics => Intl.message('Statistics', name: 'statistics');
+
+  String get settings => Intl.message('Settings', name: 'settings');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

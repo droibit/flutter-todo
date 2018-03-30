@@ -19,6 +19,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "title" : MessageLookupByLibrary.simpleMessage("TO-DO")
+    "settings" : MessageLookupByLibrary.simpleMessage("設定"),
+    "statistics" : MessageLookupByLibrary.simpleMessage("統計"),
+    "title" : MessageLookupByLibrary.simpleMessage("TO-DO"),
+    "todoList" : MessageLookupByLibrary.simpleMessage("TO-DO リスト")
   };
 }
