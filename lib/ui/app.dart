@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'i10n/app_localizations.dart';
+import '../i10n/app_localizations.dart';
 
 class TodoApp extends StatelessWidget {
   // This widget is the root of your application.
