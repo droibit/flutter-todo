@@ -1,18 +1,80 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'routes.dart';
+import 'statistics/statistics_page.dart';
+import 'tasks/tasks_page.dart';
 import '../i10n/app_localizations.dart';
 
+enum NavigationId { tasks, statistics, settings }
+
+class _NavigationItem {
+  final NavigationId id;
+
+  final IconData icon;
+
+  final String title;
+
+  _NavigationItem(
+      {@required this.id, @required this.icon, @required this.title});
+}
+
+final RouteFactory drawerRoutes = (settings) {
+  print("RouteFactory(settings=${settings.name}");
+  switch (settings.name) {
+    case '/':
+      return new FadePageRoute(
+          builder: (context) => new TasksPage(),
+          settings: settings
+      );
+    case '/tasks':
+      return new FadePageRoute(
+          builder: (context) => new TasksPage(),
+          settings: settings
+      );
+    case '/statistics':
+      return new MaterialPageRoute(
+          builder: (context) => new StatisticsPage(),
+          settings: settings
+      );
+  }
+};
+
+class _AppDrawerNavigator {
+  final NavigationId currentNavId;
+
+  const _AppDrawerNavigator({@required NavigationId initialValue})
+      : assert(initialValue != null),
+        currentNavId = initialValue;
+
+  void open(BuildContext context, NavigationId navId) {
+    print("#onNavigationSelect($navId, current=$currentNavId)");
+    // Hide drawer.
+    Navigator.pop(context);
+
+    if (currentNavId == navId) {
+      return;
+    }
+    switch (navId) {
+      case NavigationId.tasks:
+        Navigator.pop(context);
+        break;
+      case NavigationId.statistics:
+        Navigator.pushNamed(context, "/statistics");
+        break;
+      case NavigationId.settings:
+        break;
+    }
+  }
+}
+
 class AppDrawer extends StatelessWidget {
-  final NavigationId selectedNavigation;
+  final _AppDrawerNavigator _navigator;
 
-  final ValueChanged<NavigationId> onNavigationSelect;
-
-  AppDrawer(
-      {Key key,
-      @required this.selectedNavigation,
-      @required this.onNavigationSelect})
-      : super(key: key);
+  AppDrawer({Key key, @required NavigationId selectedNavigation})
+      : assert(selectedNavigation != null),
+        _navigator = new _AppDrawerNavigator(initialValue: selectedNavigation),
+        super(key: key);
 
   Widget _buildHeader(BuildContext context) {
     final localizations = AppLocalizations.of(context);
@@ -41,7 +103,7 @@ class AppDrawer extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
     final navItems = <_NavigationItem>[
       new _NavigationItem(
-          id: NavigationId.todoList,
+          id: NavigationId.tasks,
           icon: Icons.list,
           title: localizations.todoList),
       new _NavigationItem(
@@ -51,7 +113,7 @@ class AppDrawer extends StatelessWidget {
     ];
 
     return navItems
-        .map((navItem) => _buildNavigationListTile(navItem))
+        .map((navItem) => _buildNavigationListTile(context, navItem))
         .toList();
   }
 
@@ -64,16 +126,17 @@ class AppDrawer extends StatelessWidget {
           title: localizations.settings),
     ];
     return navItems
-        .map((navItem) => _buildNavigationListTile(navItem))
+        .map((navItem) => _buildNavigationListTile(context, navItem))
         .toList();
   }
 
-  ListTile _buildNavigationListTile(_NavigationItem navItem) {
+  ListTile _buildNavigationListTile(
+      BuildContext context, _NavigationItem navItem) {
     return new ListTile(
       leading: new Icon(navItem.icon),
       title: new Text(navItem.title),
-      selected: navItem.id == selectedNavigation,
-      onTap: () => onNavigationSelect(navItem.id),
+      selected: navItem.id == _navigator.currentNavId,
+      onTap: () => _navigator.open(context, navItem.id),
     );
   }
 
@@ -91,17 +154,4 @@ class AppDrawer extends StatelessWidget {
       ),
     );
   }
-}
-
-enum NavigationId { todoList, statistics, settings }
-
-class _NavigationItem {
-  final NavigationId id;
-
-  final IconData icon;
-
-  final String title;
-
-  _NavigationItem(
-      {@required this.id, @required this.icon, @required this.title});
 }

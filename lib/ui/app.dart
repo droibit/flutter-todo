@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'app_drawer.dart';
 import 'tasks/tasks_page.dart';
 import '../i10n/app_localizations.dart';
 
@@ -19,9 +21,8 @@ class TodoApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.blueGrey,
           accentColor: Colors.redAccent,
-
       ),
-      home: TasksPage(),
+      onGenerateRoute: drawerRoutes,
     );
   }
 }
