@@ -2,5 +2,8 @@
   "title": "TO-DO",
   "todoList": "TO-DO List",
   "statistics": "Statistics",
-  "settings": "Settings"
+  "settings": "Settings",
+  "appCategory": "App",
+  "buildVersionTitle": "Build version",
+  "buildVersionSubtitle": "Version: "
 }

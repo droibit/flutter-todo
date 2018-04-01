@@ -26,6 +26,12 @@ class AppLocalizations {
   String get statistics => Intl.message('Statistics', name: 'statistics');
 
   String get settings => Intl.message('Settings', name: 'settings');
+
+  String get appCategory => Intl.message('App', name: 'appCategory');
+
+  String get buildVersionTitle => Intl.message('Build version', name: 'buildVersionTitle');
+
+  String get buildVersionSubtitle => Intl.message('Version: ', name: 'buildVersionSubtitle');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
