@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'routes.dart';
+import 'settings/settings_page.dart';
 import 'statistics/statistics_page.dart';
 import 'tasks/tasks_page.dart';
 import '../i10n/app_localizations.dart';
@@ -37,6 +38,11 @@ final RouteFactory drawerRoutes = (settings) {
           builder: (context) => new StatisticsPage(),
           settings: settings
       );
+    case '/settings':
+      return new MaterialPageRoute(
+          builder: (context) => new SettingsPage(),
+          settings: settings
+      );
   }
 };
 
@@ -60,9 +66,10 @@ class _AppDrawerNavigator {
         Navigator.pop(context);
         break;
       case NavigationId.statistics:
-        Navigator.pushNamed(context, "/statistics");
+        Navigator.pushNamed(context, '/statistics');
         break;
       case NavigationId.settings:
+        Navigator.pushNamed(context, '/settings');
         break;
     }
   }
