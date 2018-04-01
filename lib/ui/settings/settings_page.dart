@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_flux/flutter_flux.dart';
 
+import '../../data/store/stores.dart';
 import '../../i10n/app_localizations.dart';
 import '../app_drawer.dart';
 
@@ -10,7 +12,17 @@ class SettingsPage extends StatefulWidget {
   State createState() => new SettingsPageState();
 }
 
-class SettingsPageState extends State<SettingsPage> {
+class SettingsPageState extends State<SettingsPage>
+    with StoreWatcherMixin<SettingsPage> {
+  SettingsStore _settingsStore;
+
+  @override
+  void initState() {
+    super.initState();
+    _settingsStore = listenToStore(settingsStoreToken);
+    getPackageAction();
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
@@ -27,22 +39,23 @@ class SettingsPageState extends State<SettingsPage> {
           new Container(
             constraints: new BoxConstraints(maxHeight: 48.0),
             child: new Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: new Align(
-                alignment: Alignment.bottomLeft,
-                child: new Text(
-                  localizations.appCategory,
-                  style: new TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.bold,
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: new Align(
+                  alignment: Alignment.bottomLeft,
+                  child: new Text(
+                    localizations.appCategory,
+                    style: new TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              )
-            ),
+                )),
           ),
           new ListTile(
             title: new Text(localizations.buildVersionTitle),
-            subtitle: new Text("${localizations.buildVersionSubtitle} 1.0.0"),
+            subtitle:
+                new Text("${localizations.buildVersionSubtitle} ${_settingsStore
+                .appVersion}"),
           )
         ],
       ),
