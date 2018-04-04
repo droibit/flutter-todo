@@ -2,6 +2,8 @@ package io.flutter.plugins;
 
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugins.packageinfo.PackageInfoPlugin;
+import io.flutter.plugins.pathprovider.PathProviderPlugin;
+import com.tekartik.sqflite.SqflitePlugin;
 
 /**
  * Generated file. Do not edit.
@@ -12,6 +14,8 @@ public final class GeneratedPluginRegistrant {
       return;
     }
     PackageInfoPlugin.registerWith(registry.registrarFor("io.flutter.plugins.packageinfo.PackageInfoPlugin"));
+    PathProviderPlugin.registerWith(registry.registrarFor("io.flutter.plugins.pathprovider.PathProviderPlugin"));
+    SqflitePlugin.registerWith(registry.registrarFor("com.tekartik.sqflite.SqflitePlugin"));
   }
 
   private static boolean alreadyRegisteredWith(PluginRegistry registry) {
