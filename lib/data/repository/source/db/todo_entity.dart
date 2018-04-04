@@ -14,7 +14,7 @@ const _completed = "completed";
 const _createSqlV1 = """
 CREATE TABLE $_tableName (
  $_id INTEGER PRIMARY KEY,
- $_timestamp TEXT NOT NULL,
+ $_title TEXT NOT NULL,
  $_description TEXT NOT NULL,
  $_timestamp INTEGER NOT NULL,
  $_completed INTEGER NOT NULL
@@ -29,9 +29,7 @@ class _TodoPersistenceContract implements PersistenceContract {
   }
 
   @override
-  Future onUpgrade(Database db, int oldVersion, int newVersion) {
-
-  }
+  Future onUpgrade(Database db, int oldVersion, int newVersion) => null;
 }
 
 class TodoEntity {
