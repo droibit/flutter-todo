@@ -42,7 +42,7 @@ class TodoEntity {
 
   final String description;
 
-  final DateTime timestamp;
+  final int timestamp;
 
   final bool completed;
 
@@ -57,7 +57,7 @@ class TodoEntity {
     _id: id,
     _title: title,
     _description: description,
-    _timestamp: timestamp.millisecondsSinceEpoch,
+    _timestamp: timestamp,
     _completed: completed ? 1 : 0,
   };
 }
@@ -66,6 +66,6 @@ TodoEntity _todoEntityFromMap(Map<String, dynamic> values) => new TodoEntity(
   id: values[_id] as int,
   title: values[_title] as String,
   description: values[_description] as String,
-  timestamp: new DateTime.fromMillisecondsSinceEpoch(values[_timestamp] as int),
+  timestamp: values[_timestamp] as int,
   completed: (values[_completed] as int) == 1,
 );
