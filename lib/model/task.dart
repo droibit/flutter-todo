@@ -1,7 +1,7 @@
 
 class Task {
 
-  final int id;
+  final String id;
 
   final String title;
 

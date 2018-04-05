@@ -13,7 +13,7 @@ const _completed = "completed";
 
 const _createSqlV1 = """
 CREATE TABLE $_tableName (
- $_id INTEGER PRIMARY KEY,
+ $_id TEXT PRIMARY KEY,
  $_title TEXT NOT NULL,
  $_description TEXT NOT NULL,
  $_timestamp INTEGER NOT NULL,
@@ -38,7 +38,7 @@ class TaskEntity {
 
   static final table = _tableName;
 
-  final int id;
+  final String id;
 
   final String title;
 
@@ -65,7 +65,7 @@ class TaskEntity {
 }
 
 TaskEntity _taskEntityFromMap(Map<String, dynamic> values) => new TaskEntity(
-  id: values[_id] as int,
+  id: values[_id] as String,
   title: values[_title] as String,
   description: values[_description] as String,
   timestamp: values[_timestamp] as int,
