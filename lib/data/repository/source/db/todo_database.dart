@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 
 import '../../../../config/config.dart';
 import 'persistence_contract.dart';
-import 'todo_entity.dart';
+import 'task_entity.dart';
 
 const _dbVersion = 1;
 
@@ -15,7 +15,7 @@ abstract class TodoDatabase {
 class TodoDatabaseImpl implements TodoDatabase {
 
   static final _contracts = <PersistenceContract>[
-    TodoEntity.contract,
+    TaskEntity.contract,
   ];
 
   Database _db;

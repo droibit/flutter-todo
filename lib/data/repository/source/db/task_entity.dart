@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'persistence_contract.dart';
 
-const _tableName = "todo";
+const _tableName = "task";
 const _id = "entry_id";
 const _title = "title";
 const _description = "description";
@@ -21,7 +21,7 @@ CREATE TABLE $_tableName (
 );
 """;
 
-class _TodoPersistenceContract implements PersistenceContract {
+class _TaskPersistenceContract implements PersistenceContract {
 
   @override
   Future onCreate(Database db) async {
@@ -32,9 +32,9 @@ class _TodoPersistenceContract implements PersistenceContract {
   Future onUpgrade(Database db, int oldVersion, int newVersion) => null;
 }
 
-class TodoEntity {
+class TaskEntity {
 
-  static final contract = _TodoPersistenceContract();
+  static final contract = _TaskPersistenceContract();
 
   final int id;
 
@@ -46,12 +46,12 @@ class TodoEntity {
 
   final bool completed;
 
-  TodoEntity({this.id, this.title, this.description, this.timestamp, this.completed})
+  TaskEntity({this.id, this.title, this.description, this.timestamp, this.completed})
     : assert(title?.isNotEmpty),
       assert(description?.isNotEmpty),
       assert(timestamp != null);
 
-  factory TodoEntity.fromMap(Map<String, dynamic> values) => _todoEntityFromMap(values);
+  factory TaskEntity.fromMap(Map<String, dynamic> values) => _taskEntityFromMap(values);
 
   Map<String, dynamic> toMap() => {
     _id: id,
@@ -62,7 +62,7 @@ class TodoEntity {
   };
 }
 
-TodoEntity _todoEntityFromMap(Map<String, dynamic> values) => new TodoEntity(
+TaskEntity _taskEntityFromMap(Map<String, dynamic> values) => new TaskEntity(
   id: values[_id] as int,
   title: values[_title] as String,
   description: values[_description] as String,

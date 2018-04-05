@@ -1,5 +1,5 @@
 
-class Todo {
+class Task {
 
   final int id;
 
@@ -11,12 +11,14 @@ class Todo {
 
   final bool completed;
 
-  Todo({this.id, this.title, this.description, this.timestamp, this.completed});
+  bool get isActive => !completed;
+
+  Task({this.id, this.title, this.description, this.timestamp, this.completed});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Todo &&
+          other is Task &&
               runtimeType == other.runtimeType &&
               id == other.id &&
               title == other.title &&
@@ -34,6 +36,6 @@ class Todo {
 
   @override
   String toString() {
-    return 'Todo{id: $id, title: $title, description: $description, timestamp: $timestamp, completed: $completed}';
+    return 'Task{id: $id, title: $title, description: $description, timestamp: $timestamp, completed: $completed}';
   }
 }
