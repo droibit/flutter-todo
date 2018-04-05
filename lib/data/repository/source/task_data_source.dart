@@ -10,29 +10,37 @@ abstract class TaskDataSource {
   Future<Task> createTask(String title, String description);
 }
 
-class LocalTaskDataSource implements TaskDataSource {
+class LocalTaskDataSource extends Object
+    with _TaskConverter
+    implements TaskDataSource {
   final TodoDatabase _db;
 
-  final Uuid uuid = new Uuid();
+  final Uuid _uuid = new Uuid();
 
-  LocalTaskDataSource(this._db);
+  LocalTaskDataSource(
+    this._db,
+  );
 
   @override
   Future<Task> createTask(String title, String description) {
     final entity = new TaskEntity(
-      id: uuid.v4(),
+      id: _uuid.v4(),
       title: title,
       description: description ?? "",
       timestamp: DateTime.now().millisecondsSinceEpoch,
       completed: false,
     );
-    return _db.createTask(entity).then((e) {
-      return new Task(
-        id: e.id,
-        title: e.title,
-        timestamp: new DateTime.fromMillisecondsSinceEpoch(e.timestamp),
-        completed: e.completed,
-      );
-    });
+    return _db.createTask(entity).then((e) => convertToModel(e));
+  }
+}
+
+class _TaskConverter {
+  Task convertToModel(TaskEntity entity) {
+    return new Task(
+      id: entity.id,
+      title: entity.title,
+      timestamp: new DateTime.fromMillisecondsSinceEpoch(entity.timestamp),
+      completed: entity.completed,
+    );
   }
 }

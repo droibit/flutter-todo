@@ -8,7 +8,9 @@ abstract class TaskRepository {
 }
 
 class TaskRepositoryImpl implements TaskRepository {
-  TaskDataSource _dataSource;
+  final TaskDataSource _dataSource;
+
+  final Map<String, Task> _cache = {};
 
   TaskRepositoryImpl(this._dataSource);
 
@@ -17,8 +19,9 @@ class TaskRepositoryImpl implements TaskRepository {
     assert(title != null);
 
     return _dataSource.createTask(title, description).then((task) {
-      // TODO: cache task.
+      _cache[task.id] = task;
       return task;
     });
+    // .catchError((error) => ...);
   }
 }
