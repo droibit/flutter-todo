@@ -36,6 +36,8 @@ class TaskEntity {
 
   static final contract = _TaskPersistenceContract();
 
+  static final table = _tableName;
+
   final int id;
 
   final String title;
