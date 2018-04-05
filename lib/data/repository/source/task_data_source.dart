@@ -8,6 +8,8 @@ import 'db/todo_database.dart';
 
 abstract class TaskDataSource {
   Future<Task> createTask(String title, String description);
+
+  Future<List<Task>> getTasks();
 }
 
 class LocalTaskDataSource extends Object
@@ -30,7 +32,14 @@ class LocalTaskDataSource extends Object
       timestamp: DateTime.now().millisecondsSinceEpoch,
       completed: false,
     );
-    return _db.createTask(entity).then((e) => convertToModel(e));
+    return _db.createTask(entity).then(convertToModel);
+  }
+
+  @override
+  Future<List<Task>> getTasks() {
+    return _db
+        .getTasks()
+        .then((entities) => entities.map(convertToModel).toList());
   }
 }
 
