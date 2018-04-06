@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 
+@immutable
 class Task {
 
   final String id;
@@ -13,7 +15,17 @@ class Task {
 
   bool get isActive => !completed;
 
-  Task({this.id, this.title, this.description, this.timestamp, this.completed});
+  const Task({this.id, this.title, this.description, this.timestamp, this.completed});
+
+  Task copy({String id, String title, String description, DateTime timestamp, bool completed}) {
+    return new Task(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      timestamp: timestamp ?? this.timestamp,
+      completed: completed ?? this.completed,
+    );
+  }
 
   @override
   bool operator ==(Object other) =>
