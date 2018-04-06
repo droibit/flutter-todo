@@ -1,27 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flux/flutter_flux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
+import '../../action/action.dart';
 import '../../i10n/app_localizations.dart';
+import '../../model/model.dart';
 import '../app_drawer.dart';
-import 'settings_store.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends StatelessWidget {
   SettingsPage({Key key}) : super(key: key);
-
-  @override
-  State createState() => new SettingsPageState();
-}
-
-class SettingsPageState extends State<SettingsPage>
-    with StoreWatcherMixin<SettingsPage> {
-  SettingsStore _settingsStore;
-
-  @override
-  void initState() {
-    super.initState();
-    _settingsStore = listenToStore(settingsStoreToken);
-    getPackageAction();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +23,7 @@ class SettingsPageState extends State<SettingsPage>
       ),
       body: new ListView(
         children: <Widget>[
+          // App category.
           new Container(
             constraints: new BoxConstraints(maxHeight: 48.0),
             child: new Padding(
@@ -55,8 +42,16 @@ class SettingsPageState extends State<SettingsPage>
           ),
           new ListTile(
             title: new Text(localizations.buildVersionTitle),
-            subtitle: new Text(
-              "${localizations.buildVersionSubtitle} ${_settingsStore.appVersion ?? '---'}",
+            subtitle: new StoreConnector<AppState, String>(
+                distinct: true,
+                onInit: (store) => store.dispatch(new GetPackageInfoAction()),
+                converter: (store) => store.state.packageInfo.version,
+                builder: (context, version) {
+                  final v = (version.isNotEmpty) ? version : '---';
+                  return new Text(
+                    "${localizations.buildVersionSubtitle} $v",
+                  );
+                },
             ),
           ),
         ],

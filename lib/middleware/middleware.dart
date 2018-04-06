@@ -6,5 +6,5 @@ import 'package_info_middleware.dart';
 
 final _packageProvider = new PackageProviderImpl();
 
-final middlewares = <Middleware<AppState>>[]
+final appMiddlewares = <Middleware<AppState>>[]
     ..addAll(createPackageInfoMiddleware(_packageProvider));
