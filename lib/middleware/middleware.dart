@@ -1,10 +1,10 @@
 import 'package:redux/redux.dart';
 
-import '../data/provider/provider.dart';
 import '../model/model.dart';
+import 'data/provider/provider.dart';
 import 'package_info_middleware.dart';
 
 final _packageProvider = new PackageProviderImpl();
 
 final appMiddlewares = <Middleware<AppState>>[]
-    ..addAll(createPackageInfoMiddleware(_packageProvider));
+  ..addAll(createPackageInfoMiddleware(_packageProvider));

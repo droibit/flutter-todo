@@ -1,8 +1,8 @@
 import 'package:redux/redux.dart';
 
 import '../action/package_info_action.dart';
-import '../data/provider/package_provider.dart';
 import '../model/model.dart';
+import 'data/provider/package_provider.dart';
 
 List<Middleware<AppState>> createPackageInfoMiddleware(
     PackageProvider packageProvider) {

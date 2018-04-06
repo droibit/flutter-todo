@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../../../config/config.dart';
+import '../../../../../config/config.dart';
 import 'persistence_contract.dart';
 import 'task_entity.dart';
 

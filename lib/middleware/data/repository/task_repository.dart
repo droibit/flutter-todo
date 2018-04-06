@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-import '../../model/task.dart';
+import '../../../model/task.dart';
 import 'source/task_data_source.dart';
 
 abstract class TaskRepository {

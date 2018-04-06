@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../model/task.dart';
+import '../../../../model/task.dart';
 import 'db/task_entity.dart';
 import 'db/todo_database.dart';
 
