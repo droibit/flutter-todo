@@ -62,6 +62,11 @@ class TaskEntity {
     _timestamp: timestamp,
     _completed: completed ? 1 : 0,
   };
+
+  @override
+  String toString() {
+    return 'TaskEntity{id: $id, title: $title, description: $description, timestamp: $timestamp, completed: $completed}';
+  }
 }
 
 TaskEntity _taskEntityFromMap(Map<String, dynamic> values) => new TaskEntity(

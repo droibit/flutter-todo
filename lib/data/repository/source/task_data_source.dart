@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../model/task.dart';
@@ -24,7 +25,7 @@ class LocalTaskDataSource extends Object
   );
 
   @override
-  Future<Task> createTask(String title, String description) {
+  Future<Task> createTask(String title, String description) async {
     final entity = new TaskEntity(
       id: _uuid.v4(),
       title: title,
@@ -32,14 +33,19 @@ class LocalTaskDataSource extends Object
       timestamp: DateTime.now().millisecondsSinceEpoch,
       completed: false,
     );
-    return _db.createTask(entity).then(convertToModel);
+
+    // TODO: error handling
+    final successful = await _db.createTask(entity);
+    debugPrint("Create: $successful, entity: $entity");
+
+    return convertToModel(entity);
   }
 
   @override
-  Future<List<Task>> getTasks() {
-    return _db
-        .getTasks()
-        .then((entities) => entities.map(convertToModel).toList());
+  Future<List<Task>> getTasks() async {
+    final entities = await _db.getTasks();
+    final tasks = entities.map(convertToModel);
+    return new List.unmodifiable(tasks);
   }
 }
 

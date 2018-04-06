@@ -10,7 +10,7 @@ import 'task_entity.dart';
 const _dbVersion = 1;
 
 abstract class TodoDatabase {
-  Future<TaskEntity> createTask(TaskEntity entity);
+  Future<bool> createTask(TaskEntity entity);
 
   Future<List<TaskEntity>> getTasks();
 }
@@ -44,20 +44,17 @@ class TodoDatabaseImpl implements TodoDatabase {
   }
 
   @override
-  Future<TaskEntity> createTask(TaskEntity entity) async {
-    return db
-        .then((db) => db.insert(TaskEntity.table, entity.toMap()))
-        .then((count) {
-      assert(count > 0);
-      return entity;
-    });
+  Future<bool> createTask(TaskEntity entity) async {
+    final db = await this.db;
+    final insertedCount = await db.insert(TaskEntity.table, entity.toMap());
+    return insertedCount > 0;
   }
 
   @override
   Future<List<TaskEntity>> getTasks() async {
-    return db.then((db) => db.query(TaskEntity.table)).then((result) {
-      return result.map((m) => new TaskEntity.fromMap(m)).toList();
-    });
+    final db = await this.db;
+    final entityMaps = await db.query(TaskEntity.table);
+    return entityMaps.map((m) => new TaskEntity.fromMap(m)).toList();
   }
 
   Future _onCreate(Database db, int newVersion) async {

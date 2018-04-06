@@ -34,15 +34,14 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Future<List<Task>> getTasks() {
+  Future<List<Task>> getTasks() async {
     if (_cache.isNotEmpty && !_cacheIsDirty) {
-      return Future.value(new List.unmodifiable(_cache.values));
+      return new List.unmodifiable(_cache.values);
     }
 
-    return _dataSource.getTasks().then((tasks) {
-      _refreshCache(tasks);
-      return new List.unmodifiable(tasks);
-    });
+    final tasks = await _dataSource.getTasks();
+    _refreshCache(tasks);
+    return new List.unmodifiable(tasks);
   }
 
   @override
