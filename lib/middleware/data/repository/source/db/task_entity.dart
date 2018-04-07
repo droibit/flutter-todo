@@ -36,7 +36,11 @@ class TaskEntity {
 
   static final contract = _TaskPersistenceContract();
 
-  static final table = _tableName;
+  static const table = _tableName;
+
+  static const columnTimestamp = _timestamp;
+
+  static const columnTitle = _title;
 
   final String id;
 

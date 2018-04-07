@@ -4,7 +4,7 @@ import '../action/package_info_action.dart';
 import '../model/model.dart';
 import 'data/provider/package_provider.dart';
 
-List<Middleware<AppState>> createPackageInfoMiddleware(
+List<Middleware<AppState>> createPackageInfoMiddlewares(
     PackageProvider packageProvider) {
   return <Middleware<AppState>>[
     new TypedMiddleware<AppState, GetPackageInfoAction>(

@@ -54,6 +54,7 @@ class _TaskConverter {
     return new Task(
       id: entity.id,
       title: entity.title,
+      description: entity.description,
       timestamp: new DateTime.fromMillisecondsSinceEpoch(entity.timestamp),
       completed: entity.completed,
     );
