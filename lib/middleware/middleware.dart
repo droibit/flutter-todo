@@ -9,9 +9,7 @@ import 'task_middleware.dart';
 final _packageProvider = new PackageProviderImpl();
 
 final _taskRepository = new TaskRepositoryImpl(
-  new LocalTaskDataSource(
-    new TodoDatabaseImpl()
-  ),
+  new LocalTaskDataSource(new TodoDatabaseImpl()),
 );
 
 final appMiddlewares = <Middleware<AppState>>[]

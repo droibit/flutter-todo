@@ -22,7 +22,6 @@ CREATE TABLE $_tableName (
 """;
 
 class _TaskPersistenceContract implements PersistenceContract {
-
   @override
   Future onCreate(Database db) async {
     await db.execute(_createSqlV1);
@@ -33,7 +32,6 @@ class _TaskPersistenceContract implements PersistenceContract {
 }
 
 class TaskEntity {
-
   static final contract = _TaskPersistenceContract();
 
   static const table = _tableName;
@@ -52,20 +50,22 @@ class TaskEntity {
 
   final bool completed;
 
-  TaskEntity({this.id, this.title, this.description, this.timestamp, this.completed})
-    : assert(title?.isNotEmpty),
-      assert(description?.isNotEmpty),
-      assert(timestamp != null);
+  TaskEntity(
+      {this.id, this.title, this.description, this.timestamp, this.completed})
+      : assert(title?.isNotEmpty),
+        assert(description?.isNotEmpty),
+        assert(timestamp != null);
 
-  factory TaskEntity.fromMap(Map<String, dynamic> values) => _taskEntityFromMap(values);
+  factory TaskEntity.fromMap(Map<String, dynamic> values) =>
+      _taskEntityFromMap(values);
 
   Map<String, dynamic> toMap() => {
-    _id: id,
-    _title: title,
-    _description: description,
-    _timestamp: timestamp,
-    _completed: completed ? 1 : 0,
-  };
+        _id: id,
+        _title: title,
+        _description: description,
+        _timestamp: timestamp,
+        _completed: completed ? 1 : 0,
+      };
 
   @override
   String toString() {
@@ -74,9 +74,9 @@ class TaskEntity {
 }
 
 TaskEntity _taskEntityFromMap(Map<String, dynamic> values) => new TaskEntity(
-  id: values[_id] as String,
-  title: values[_title] as String,
-  description: values[_description] as String,
-  timestamp: values[_timestamp] as int,
-  completed: (values[_completed] as int) == 1,
-);
+      id: values[_id] as String,
+      title: values[_title] as String,
+      description: values[_description] as String,
+      timestamp: values[_timestamp] as int,
+      completed: (values[_completed] as int) == 1,
+    );

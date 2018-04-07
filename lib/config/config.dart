@@ -8,7 +8,6 @@ const _databaseDirName = "database";
 const _todoDbName = "todo.db";
 
 class DbConfig {
-
   static Future<String> getTodoDbPath() async {
     final documentDir = await getApplicationDocumentsDirectory();
     final dbPath = p.join(documentDir.path, _databaseDirName, _todoDbName);
@@ -16,7 +15,7 @@ class DbConfig {
     if (await dbDir.exists()) {
       return dbPath;
     }
-    await dbDir.create(recursive:  true);
+    await dbDir.create(recursive: true);
     return dbPath;
   }
 }

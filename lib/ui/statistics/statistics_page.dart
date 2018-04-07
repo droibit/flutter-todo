@@ -17,11 +17,10 @@ class StatisticsPageState extends State<StatisticsPage> {
     return new Scaffold(
       drawer: new AppDrawer(selectedNavigation: NavigationId.statistics),
       appBar: new AppBar(
-        leading:
-            new IconButton(
-                icon: new Icon(Icons.arrow_back),
-                onPressed: () => Navigator.pop(context)
-            ),
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: new Text(title),
       ),
       body: new Center(

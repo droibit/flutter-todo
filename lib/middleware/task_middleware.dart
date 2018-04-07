@@ -5,7 +5,8 @@ import '../action/task_action.dart';
 import '../model/model.dart';
 import 'data/repository/task_repository.dart';
 
-List<Middleware<AppState>> createTaskMiddlewares(TaskRepository taskRepository) {
+List<Middleware<AppState>> createTaskMiddlewares(
+    TaskRepository taskRepository) {
   return <Middleware<AppState>>[
     new TypedMiddleware<AppState, GetTasksAction>(
       _getTasksMiddleware(taskRepository),

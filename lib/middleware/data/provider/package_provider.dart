@@ -7,7 +7,6 @@ abstract class PackageProvider {
 }
 
 class PackageProviderImpl implements PackageProvider {
-
   static PackageProviderImpl _instance;
 
   factory PackageProviderImpl() {

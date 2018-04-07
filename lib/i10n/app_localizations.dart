@@ -6,9 +6,9 @@ import 'package:intl/intl.dart';
 import 'messages_all.dart';
 
 class AppLocalizations {
-
   static Future<AppLocalizations> load(Locale locale) {
-    final String name = locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
+    final String name =
+        locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((bool _) {
       Intl.defaultLocale = localeName;
@@ -31,13 +31,14 @@ class AppLocalizations {
 
   String get appCategory => Intl.message('App', name: 'appCategory');
 
-  String get buildVersionTitle => Intl.message('Build version', name: 'buildVersionTitle');
+  String get buildVersionTitle =>
+      Intl.message('Build version', name: 'buildVersionTitle');
 
-  String get buildVersionSubtitle => Intl.message('Version: ', name: 'buildVersionSubtitle');
+  String get buildVersionSubtitle =>
+      Intl.message('Version: ', name: 'buildVersionSubtitle');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
-
   const AppLocalizationsDelegate();
 
   @override

@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../i10n/app_localizations.dart';
 import 'routes.dart';
 import 'settings/settings_page.dart';
 import 'statistics/statistics_page.dart';
 import 'tasks/tasks_page.dart';
-import '../i10n/app_localizations.dart';
 
 enum NavigationId { tasks, statistics, settings }
 
@@ -16,8 +16,11 @@ class _NavigationItem {
 
   final String title;
 
-  _NavigationItem(
-      {@required this.id, @required this.icon, @required this.title});
+  _NavigationItem({
+    @required this.id,
+    @required this.icon,
+    @required this.title,
+  });
 }
 
 final RouteFactory drawerRoutes = (settings) {
@@ -25,23 +28,23 @@ final RouteFactory drawerRoutes = (settings) {
   switch (settings.name) {
     case '/':
       return new FadePageRoute(
-          builder: (context) => new TasksPage(),
-          settings: settings
+        builder: (context) => new TasksPage(),
+        settings: settings,
       );
     case '/tasks':
       return new FadePageRoute(
-          builder: (context) => new TasksPage(),
-          settings: settings
+        builder: (context) => new TasksPage(),
+        settings: settings,
       );
     case '/statistics':
       return new MaterialPageRoute(
-          builder: (context) => new StatisticsPage(),
-          settings: settings
+        builder: (context) => new StatisticsPage(),
+        settings: settings,
       );
     case '/settings':
       return new MaterialPageRoute(
-          builder: (context) => new SettingsPage(),
-          settings: settings
+        builder: (context) => new SettingsPage(),
+        settings: settings,
       );
   }
 };
@@ -49,8 +52,9 @@ final RouteFactory drawerRoutes = (settings) {
 class _AppDrawerNavigator {
   final NavigationId currentNavId;
 
-  const _AppDrawerNavigator({@required NavigationId initialValue})
-      : assert(initialValue != null),
+  const _AppDrawerNavigator({
+    @required NavigationId initialValue,
+  })  : assert(initialValue != null),
         currentNavId = initialValue;
 
   void open(BuildContext context, NavigationId navId) {
@@ -78,8 +82,10 @@ class _AppDrawerNavigator {
 class AppDrawer extends StatelessWidget {
   final _AppDrawerNavigator _navigator;
 
-  AppDrawer({Key key, @required NavigationId selectedNavigation})
-      : assert(selectedNavigation != null),
+  AppDrawer({
+    @required NavigationId selectedNavigation,
+    Key key,
+  })  : assert(selectedNavigation != null),
         _navigator = new _AppDrawerNavigator(initialValue: selectedNavigation),
         super(key: key);
 
@@ -110,13 +116,15 @@ class AppDrawer extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
     final navItems = <_NavigationItem>[
       new _NavigationItem(
-          id: NavigationId.tasks,
-          icon: Icons.list,
-          title: localizations.todoList),
+        id: NavigationId.tasks,
+        icon: Icons.list,
+        title: localizations.todoList,
+      ),
       new _NavigationItem(
-          id: NavigationId.statistics,
-          icon: Icons.poll,
-          title: localizations.statistics),
+        id: NavigationId.statistics,
+        icon: Icons.poll,
+        title: localizations.statistics,
+      ),
     ];
 
     return navItems
@@ -128,9 +136,10 @@ class AppDrawer extends StatelessWidget {
     final localizations = AppLocalizations.of(context);
     final navItems = <_NavigationItem>[
       new _NavigationItem(
-          id: NavigationId.settings,
-          icon: Icons.settings,
-          title: localizations.settings),
+        id: NavigationId.settings,
+        icon: Icons.settings,
+        title: localizations.settings,
+      ),
     ];
     return navItems
         .map((navItem) => _buildNavigationListTile(context, navItem))
