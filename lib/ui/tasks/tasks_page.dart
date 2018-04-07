@@ -14,7 +14,7 @@ class TasksPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       drawer: new AppDrawer(
-          selectedNavigation: NavigationId.tasks,
+        selectedNavigation: NavigationId.tasks,
       ),
       appBar: new AppBar(title: new Text(AppLocalizations.of(context).title)),
       body: new Center(
@@ -31,6 +31,10 @@ class TasksPage extends StatelessWidget {
           },
         ),
       ),
+      floatingActionButton: new FloatingActionButton(
+        child: new Icon(Icons.add),
+        onPressed: null,
+      ),
     );
   }
 }
@@ -41,7 +45,20 @@ class _EmptyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Center(
-      child: const Text('No TO-DO.'),
+      child: new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          new Icon(
+            Icons.assignment_turned_in,
+            size: 36.0,
+            color: Theme.of(context).primaryColor,
+          ),
+          new Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: new Text(AppLocalizations.of(context).noTasks),
+          )
+        ],
+      ),
     );
   }
 }

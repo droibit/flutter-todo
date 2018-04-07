@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "appCategory" : MessageLookupByLibrary.simpleMessage("App"),
     "buildVersionSubtitle" : MessageLookupByLibrary.simpleMessage("Version: "),
     "buildVersionTitle" : MessageLookupByLibrary.simpleMessage("Build version"),
+    "noTasks" : MessageLookupByLibrary.simpleMessage("No TO-DOs."),
     "settings" : MessageLookupByLibrary.simpleMessage("Settings"),
     "statistics" : MessageLookupByLibrary.simpleMessage("Statistics"),
     "title" : MessageLookupByLibrary.simpleMessage("TO-DO"),

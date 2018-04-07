@@ -1,6 +1,7 @@
 {
   "title": "TO-DO",
   "todoList": "TO-DO リスト",
+  "noTasks": "TO-DOなし",
   "statistics": "統計",
   "settings": "設定",
   "appCategory": "App",

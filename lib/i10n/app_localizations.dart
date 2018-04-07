@@ -23,6 +23,8 @@ class AppLocalizations {
 
   String get todoList => Intl.message('TO-DO List', name: 'todoList');
 
+  String get noTasks => Intl.message('No TO-DOs.', name: 'noTasks');
+
   String get statistics => Intl.message('Statistics', name: 'statistics');
 
   String get settings => Intl.message('Settings', name: 'settings');
