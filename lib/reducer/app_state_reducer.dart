@@ -4,7 +4,8 @@ import 'task_reducer.dart';
 
 AppState appStateReducer(AppState state, dynamic action) {
   return new AppState(
-    tasks: [],  // TODO: replace taskReducer
+    tasks: tasksReducer(state.tasks, action),
+    createTask: createTaskReducer(state.createTask, action),
     packageInfo: packageInfoReducer(state.packageInfo, action),
   );
 }

@@ -4,14 +4,16 @@ import 'package:flutter/foundation.dart';
 class PackageInfo {
   final String version;
 
-  const PackageInfo({this.version = ''});
+  const PackageInfo({
+    @required this.version,
+  }) : assert(version != null);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PackageInfo &&
-              runtimeType == other.runtimeType &&
-              version == other.version;
+      other is PackageInfo &&
+          runtimeType == other.runtimeType &&
+          version == other.version;
 
   @override
   int get hashCode => version.hashCode;
