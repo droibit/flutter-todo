@@ -6,6 +6,7 @@ import '../../action/task_action.dart';
 import '../../i10n/app_localizations.dart';
 import '../../model/model.dart';
 import '../app_drawer.dart';
+import 'new_task_page.dart';
 
 class TasksPage extends StatelessWidget {
   TasksPage({Key key}) : super(key: key);
@@ -31,11 +32,35 @@ class TasksPage extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: new FloatingActionButton(
-        child: new Icon(Icons.add),
-        onPressed: null,
-      ),
+      floatingActionButton: new Builder(builder: (innerContext) {
+        return new FloatingActionButton(
+          child: new Icon(Icons.add),
+          onPressed: () => _navigateToNewTaskPage(innerContext),
+        );
+      }),
     );
+  }
+
+  void _navigateToNewTaskPage(BuildContext context) {
+    Navigator
+        .push<bool>(
+      context,
+      new MaterialPageRoute(
+        builder: (context) => new NewTaskPage(),
+      ),
+    )
+        .then((successful) {
+      if (successful) {
+        _showSnackbar(
+            context, AppLocalizations.of(context).newTaskSuccessfulToCreate);
+      }
+    });
+  }
+
+  void _showSnackbar(BuildContext context, String message) {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+          content: new Text(message),
+        ));
   }
 }
 
