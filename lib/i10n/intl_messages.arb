@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2018-04-08T00:02:25.218858",
+  "@@last_modified": "2018-04-09T03:00:10.225589",
   "title": "TO-DO",
   "@title": {
     "type": "text",
@@ -12,6 +12,41 @@
   },
   "noTasks": "No TO-DOs.",
   "@noTasks": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newTask": "New TO-DO",
+  "@newTask": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newTaskTitleLabel": "Title",
+  "@newTaskTitleLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newTaskTitleValidationError": "Title is required.",
+  "@newTaskTitleValidationError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newTaskDescLabel": "Description",
+  "@newTaskDescLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newTaskDescHint": "Enter your TO-DO here.",
+  "@newTaskDescHint": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newTaskFailedToCreate": "Failed to create new TO-DO.",
+  "@newTaskFailedToCreate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "newTaskSuccessfulToCreate": "TO-DO created.",
+  "@newTaskSuccessfulToCreate": {
     "type": "text",
     "placeholders": {}
   },

@@ -25,6 +25,20 @@ class AppLocalizations {
 
   String get noTasks => Intl.message('No TO-DOs.', name: 'noTasks');
 
+  String get newTask => Intl.message('New TO-DO', name: 'newTask');
+
+  String get newTaskTitleLabel => Intl.message('Title', name: 'newTaskTitleLabel');
+  
+  String get newTaskTitleValidationError => Intl.message('Title is required.', name: 'newTaskTitleValidationError');
+
+  String get newTaskDescLabel => Intl.message('Description', name: 'newTaskDescLabel');
+
+  String get newTaskDescHint => Intl.message('Enter your TO-DO here.', name: 'newTaskDescHint');
+
+  String get newTaskFailedToCreate => Intl.message('Failed to create new TO-DO.', name: 'newTaskFailedToCreate');
+
+  String get newTaskSuccessfulToCreate => Intl.message('TO-DO created.', name: 'newTaskSuccessfulToCreate');
+
   String get statistics => Intl.message('Statistics', name: 'statistics');
 
   String get settings => Intl.message('Settings', name: 'settings');
