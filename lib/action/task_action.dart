@@ -26,3 +26,6 @@ class OnCreateTaskAction {
 
   OnCreateTaskAction(this.createTask) : assert(createTask != null);
 }
+
+class CreateTaskResetAction {
+}
