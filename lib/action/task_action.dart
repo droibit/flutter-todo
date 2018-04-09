@@ -10,6 +10,13 @@ class OnGetTaskAction {
   OnGetTaskAction(this.tasks) : assert(tasks != null);
 }
 
+class ChangeTasksFilterAction {
+
+  final TasksFilter filter;
+
+  ChangeTasksFilterAction(this.filter);
+}
+
 class CreateTaskAction {
   final String title;
 
@@ -29,3 +36,4 @@ class OnCreateTaskAction {
 
 class CreateTaskResetAction {
 }
+

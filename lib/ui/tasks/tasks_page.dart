@@ -9,6 +9,7 @@ import '../app_drawer.dart';
 import 'new_task_page.dart';
 
 class TasksPage extends StatelessWidget {
+
   TasksPage({Key key}) : super(key: key);
 
   @override

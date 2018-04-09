@@ -94,3 +94,5 @@ class CreateTask {
     return 'CreateTask{task: $task}';
   }
 }
+
+enum TasksFilter { all, active, completed }
