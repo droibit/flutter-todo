@@ -25,6 +25,18 @@ class AppLocalizations {
 
   String get noTasks => Intl.message('No TO-DOs.', name: 'noTasks');
 
+  String get todoListHeaderAll => Intl.message('All TO-DOs', name: 'todoListHeaderAll');
+
+  String get todoListHeaderActive => Intl.message('Active TO-DOs', name: 'todoListHeaderActive');
+
+  String get todoListHeaderCompleted => Intl.message('Completed TO-DOs', name: 'todoListHeaderCompleted');
+
+  String get todoListFilterAll => Intl.message('All', name: 'todoListFilterAll');
+
+  String get todoListFilterActive => Intl.message('Active', name: 'todoListFilterActive');
+
+  String get todoListFilterCompleted => Intl.message('Completed', name: 'todoListFilterCompleted');
+
   String get newTask => Intl.message('New TO-DO', name: 'newTask');
 
   String get newTaskTitleLabel => Intl.message('Title', name: 'newTaskTitleLabel');

@@ -33,6 +33,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "settings" : MessageLookupByLibrary.simpleMessage("Settings"),
     "statistics" : MessageLookupByLibrary.simpleMessage("Statistics"),
     "title" : MessageLookupByLibrary.simpleMessage("TO-DO"),
-    "todoList" : MessageLookupByLibrary.simpleMessage("TO-DO List")
+    "todoList" : MessageLookupByLibrary.simpleMessage("TO-DO List"),
+    "todoListFilterActive" : MessageLookupByLibrary.simpleMessage("Active"),
+    "todoListFilterAll" : MessageLookupByLibrary.simpleMessage("All"),
+    "todoListFilterCompleted" : MessageLookupByLibrary.simpleMessage("Completed"),
+    "todoListHeaderActive" : MessageLookupByLibrary.simpleMessage("Active TO-DOs"),
+    "todoListHeaderAll" : MessageLookupByLibrary.simpleMessage("All TO-DOs"),
+    "todoListHeaderCompleted" : MessageLookupByLibrary.simpleMessage("Completed TO-DOs")
   };
 }

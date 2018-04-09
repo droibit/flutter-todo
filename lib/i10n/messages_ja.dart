@@ -33,6 +33,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "settings" : MessageLookupByLibrary.simpleMessage("設定"),
     "statistics" : MessageLookupByLibrary.simpleMessage("統計"),
     "title" : MessageLookupByLibrary.simpleMessage("TO-DO"),
-    "todoList" : MessageLookupByLibrary.simpleMessage("TO-DO リスト")
+    "todoList" : MessageLookupByLibrary.simpleMessage("TO-DO リスト"),
+    "todoListFilterActive" : MessageLookupByLibrary.simpleMessage("未完了"),
+    "todoListFilterAll" : MessageLookupByLibrary.simpleMessage("全て"),
+    "todoListFilterCompleted" : MessageLookupByLibrary.simpleMessage("完了済み"),
+    "todoListHeaderActive" : MessageLookupByLibrary.simpleMessage("未完了のTO-DO"),
+    "todoListHeaderAll" : MessageLookupByLibrary.simpleMessage("全てのTO-DO"),
+    "todoListHeaderCompleted" : MessageLookupByLibrary.simpleMessage("完了済みのTO-DO")
   };
 }

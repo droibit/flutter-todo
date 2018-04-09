@@ -1,6 +1,12 @@
 {
   "title": "TO-DO",
   "todoList": "TO-DO リスト",
+  "todoListHeaderAll": "全てのTO-DO",
+  "todoListHeaderActive": "未完了のTO-DO",
+  "todoListHeaderCompleted": "完了済みのTO-DO",
+  "todoListFilterAll": "全て",
+  "todoListFilterActive": "未完了",
+  "todoListFilterCompleted": "完了済み",
   "noTasks": "TO-DOなし",
   "newTask": "新規TO-DO",
   "newTaskTitleLabel": "タイトル",
