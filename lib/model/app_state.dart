@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package_info.dart';
 import 'task.dart';
+import '../uitls/optional.dart';
 
 @immutable
 class AppState {
@@ -9,18 +10,18 @@ class AppState {
 
   final TasksFilter tasksFilter;
 
-  final CreateTask createTask;
+  final Optional<CreateTask> createTask;
 
-  final PackageInfo packageInfo;
+  final Optional<PackageInfo> packageInfo;
 
   const AppState({
     this.tasks = const [],
     this.tasksFilter = TasksFilter.all,
-    this.createTask,
-    this.packageInfo,
+    this.createTask = const Optional.absent(),
+    this.packageInfo = const Optional.absent(),
   });
 
-  AppState copy({
+  AppState copyWith({
     List<Task> tasks,
     TasksFilter tasksFilter,
     CreateTask createTask,

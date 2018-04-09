@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import '../../action/task_action.dart';
 import '../../i10n/app_localizations.dart';
 import '../../model/model.dart';
+import '../../uitls/optional.dart';
 
 typedef void _OnSubmitCallback(String title, String description);
 
@@ -100,7 +101,7 @@ class _CreateTaskActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, CreateTask>(
+    return new StoreConnector<AppState, Optional<CreateTask>>(
       converter: (store) => store.state.createTask,
       onWillChange: (createTask) => _onCreateTask(context, createTask),
       builder: (context, _) {
@@ -120,18 +121,17 @@ class _CreateTaskActionButton extends StatelessWidget {
     );
   }
 
-  void _onCreateTask(BuildContext context, CreateTask createTask) {
-    debugPrint("_onCreateTask(isSuccessful=${createTask?.isSuccessful})");
+  void _onCreateTask(BuildContext context, Optional<CreateTask> createTask) {
     // ignore initial state.
-    if (createTask == null) {
-      return;
-    }
-    if (createTask.isSuccessful) {
-      Navigator.pop(context, true);
-    } else {
-      _showSnackbar(
-          context, AppLocalizations.of(context).newTaskFailedToCreate);
-    }
+    createTask.ifPresent((v) {
+      if (v.isSuccessful) {
+        Navigator.pop(context, true);
+      } else {
+        _showSnackbar(
+            context, AppLocalizations.of(context).newTaskFailedToCreate);
+      }
+      debugPrint("_onCreateTask(isSuccessful=${v.isSuccessful})");
+    });
   }
 
   void _onSubmit(BuildContext context, String title, String description) {

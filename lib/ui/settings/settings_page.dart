@@ -45,11 +45,12 @@ class SettingsPage extends StatelessWidget {
             subtitle: new StoreConnector<AppState, String>(
               distinct: true,
               onInit: (store) => store.dispatch(new GetPackageInfoAction()),
-              converter: (store) => store.state.packageInfo?.version,
-              builder: (context, version) {
-                final v = (version.isNotEmpty) ? version : '---';
+              converter: (store) =>
+                  store.state.packageInfo.orNull?.version ?? "",
+              builder: (context, appVersion) {
+                final version = (appVersion.isNotEmpty) ? appVersion : '---';
                 return new Text(
-                  "${localizations.buildVersionSubtitle} $v",
+                  "${localizations.buildVersionSubtitle} $version",
                 );
               },
             ),
