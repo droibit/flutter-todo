@@ -9,7 +9,6 @@ import '../app_drawer.dart';
 import 'new_task_page.dart';
 
 class TasksPage extends StatelessWidget {
-
   TasksPage({Key key}) : super(key: key);
 
   @override
@@ -18,7 +17,11 @@ class TasksPage extends StatelessWidget {
       drawer: new AppDrawer(
         selectedNavigation: NavigationId.tasks,
       ),
-      appBar: new AppBar(title: new Text(AppLocalizations.of(context).title)),
+      appBar: new AppBar(
+        title: new Text(AppLocalizations.of(context).title),
+        elevation: 0.0,
+        actions: <Widget>[],
+      ),
       body: new Center(
         child: new StoreConnector<AppState, List<Task>>(
           distinct: true,
@@ -28,7 +31,7 @@ class TasksPage extends StatelessWidget {
             if (tasks.isEmpty) {
               return new _EmptyView();
             } else {
-              return new _TaskListView(tasks);
+              return new _TaskListContents(tasks);
             }
           },
         ),
@@ -89,10 +92,10 @@ class _EmptyView extends StatelessWidget {
   }
 }
 
-class _TaskListView extends StatelessWidget {
+class _TaskListContents extends StatelessWidget {
   final List<Task> _tasks;
 
-  _TaskListView(
+  _TaskListContents(
     this._tasks, {
     Key key,
   })  : assert(_tasks?.isNotEmpty),
@@ -100,8 +103,119 @@ class _TaskListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
-      child: const Text('TO-DO.'),
+    return new Container(
+      child: new Column(
+        children: <Widget>[
+          new _TaskListHeader(),
+          new _TaskListView(_tasks),
+        ],
+      ),
+    );
+  }
+}
+
+class _TaskListHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return new Material(
+      color: theme.primaryColor,
+      elevation: 4.0,
+      child: new Column(
+        children: <Widget>[
+          new Divider(
+            height: 2.0,
+            color: Colors.white24,
+          ),
+          new Container(
+            constraints: new BoxConstraints(minHeight: 48.0, maxHeight: 48.0),
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Text(
+                  'All TO-DOs',
+                  style: new TextStyle(
+                    color: Colors.white70,
+                    fontSize: theme.textTheme.subhead.fontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                new Row(
+                  children: <Widget>[
+                    new Material(
+                      type: MaterialType.card,
+                      color: Theme.of(context).primaryColor,
+                      child: new InkWell(
+                        child: new Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: new Text(
+                            'Title',
+                            style: new TextStyle(
+                              color: Colors.white,
+                              fontSize: theme.textTheme.subhead.fontSize,
+                            ),
+                          ),
+                        ),
+                        onTap: () {},
+                      ),
+                    ),
+                    new Material(
+                      type: MaterialType.circle,
+                      color: Theme.of(context).primaryColor,
+                      child: new InkWell(
+                        child: new Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: new Icon(
+                            Icons.arrow_upward,
+                            color: Colors.white,
+                          ),
+                        ),
+                        onTap: () {},
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TaskListView extends StatelessWidget {
+  final List<Task> _tasks;
+
+  _TaskListView(this._tasks);
+
+  @override
+  Widget build(BuildContext context) {
+    final tiles = _tasks.map((task) {
+      return new ListTile(
+        leading: new Checkbox(
+          value: task.completed,
+          onChanged: (newValue) {},
+        ),
+        title: new Text(
+          task.title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+      );
+    }).toList(growable: false);
+
+    final dividedTiles = ListTile
+        .divideTiles(
+          context: context,
+          tiles: tiles,
+        )
+        .toList(growable: false);
+    return new Expanded(
+      child: new ListView(
+        children: dividedTiles,
+      ),
     );
   }
 }
