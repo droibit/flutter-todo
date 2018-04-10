@@ -28,6 +28,8 @@ class TasksPage extends StatelessWidget {
           onInit: (store) => store.dispatch(new GetTasksAction()),
           converter: (store) => store.state.tasks,
           builder: (context, tasks) {
+            debugPrint("#onGetTasks(tasks=$tasks)");
+            // FIXME: EmptyView flickers.
             if (tasks.isEmpty) {
               return new _EmptyView();
             } else {
@@ -54,7 +56,7 @@ class TasksPage extends StatelessWidget {
       ),
     )
         .then((successful) {
-      if (successful) {
+      if (successful != null && successful) {
         _showSnackbar(
             context, AppLocalizations.of(context).newTaskSuccessfulToCreate);
       }

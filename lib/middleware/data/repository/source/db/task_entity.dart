@@ -53,7 +53,7 @@ class TaskEntity {
   TaskEntity(
       {this.id, this.title, this.description, this.timestamp, this.completed})
       : assert(title?.isNotEmpty),
-        assert(description?.isNotEmpty),
+        assert(description != null),
         assert(timestamp != null);
 
   factory TaskEntity.fromMap(Map<String, dynamic> values) =>

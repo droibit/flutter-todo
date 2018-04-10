@@ -16,20 +16,19 @@ abstract class TaskRepository {
 class TaskRepositoryImpl implements TaskRepository {
   final TaskDataSource _dataSource;
 
-  final Map<String, Task> _cache = {};
+  final _cache = new Map<String, Task>();
 
   bool _cacheIsDirty = false;
 
   TaskRepositoryImpl(this._dataSource);
 
   @override
-  Future<Task> createTask(String title, String description) {
+  Future<Task> createTask(String title, String description) async {
     assert(title != null);
 
-    return _dataSource.createTask(title, description).then((task) {
-      _cache[task.id] = task;
-      return task;
-    });
+    final newTask = await _dataSource.createTask(title, description);
+    _cache[newTask.id] = newTask;
+    return newTask;
     // .catchError((error) => ...);
   }
 

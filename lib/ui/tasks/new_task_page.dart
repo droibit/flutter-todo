@@ -102,6 +102,7 @@ class _CreateTaskActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, Optional<CreateTask>>(
+      distinct: true,
       converter: (store) => store.state.createTask,
       onWillChange: (createTask) => _onCreateTask(context, createTask),
       builder: (context, _) {

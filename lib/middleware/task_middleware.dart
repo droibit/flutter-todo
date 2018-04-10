@@ -17,9 +17,9 @@ List<Middleware<AppState>> createTaskMiddlewares(
   ];
 }
 
-Middleware<AppState> _getTasksMiddleware(TaskRepository repository) {
+Middleware<AppState> _getTasksMiddleware(TaskRepository taskRepository) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
-    final tasks = await repository.getTasks();
+    final tasks = await taskRepository.getTasks();
     next(new OnGetTaskAction(tasks));
   };
 }
@@ -31,9 +31,11 @@ Middleware<AppState> _createTaskMiddleware(TaskRepository taskRepository) {
       final task = await taskRepository.createTask(a.title, a.description);
       debugPrint("Created task: $task");
       next(new OnCreateTaskAction(new CreateTask.success(task)));
-      // TODO: emit OnGetTaskAction or refresh action.
-    } catch (e) {
-      debugPrint(e);
+
+      final tasks = await taskRepository.getTasks();
+      next(new OnGetTaskAction(tasks));
+    } on Exception catch (e) {
+      debugPrint("$e");
       next(new OnCreateTaskAction(new CreateTask.error()));
     }
   };
