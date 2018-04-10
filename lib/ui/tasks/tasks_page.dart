@@ -143,14 +143,14 @@ class _TaskListHeader extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                new Row(
-                  children: <Widget>[
-                    new Material(
-                      type: MaterialType.card,
-                      color: Theme.of(context).primaryColor,
-                      child: new InkWell(
-                        child: new Padding(
-                          padding: const EdgeInsets.all(8.0),
+                new Material(
+                  type: MaterialType.card,
+                  color: Theme.of(context).primaryColor,
+                  child: new InkWell(
+                    child: new Row(
+                      children: <Widget>[
+                        new Padding(
+                          padding: const EdgeInsets.all(4.0),
                           child: new Text(
                             'Title',
                             style: new TextStyle(
@@ -159,24 +159,18 @@ class _TaskListHeader extends StatelessWidget {
                             ),
                           ),
                         ),
-                        onTap: () {},
-                      ),
-                    ),
-                    new Material(
-                      type: MaterialType.circle,
-                      color: Theme.of(context).primaryColor,
-                      child: new InkWell(
-                        child: new Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        new Padding(
+                          padding: const EdgeInsets.all(4.0),
                           child: new Icon(
                             Icons.arrow_upward,
+                            size: 20.0,
                             color: Colors.white,
                           ),
                         ),
-                        onTap: () {},
-                      ),
+                      ],
                     ),
-                  ],
+                    onTap: () {},
+                  ),
                 ),
               ],
             ),
