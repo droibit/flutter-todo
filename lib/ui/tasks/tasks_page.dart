@@ -28,7 +28,8 @@ class TasksPage extends StatelessWidget {
             title: new Text(localizations.title),
             elevation: 0.0,
             actions: <Widget>[
-              new TasksFilterPopupMenu(viewModel.onFilterChanged)
+              new _TasksFilterPopupMenu(viewModel.onFilterChanged),
+              new _OverflowPopupMenu(),
             ],
           ),
           body: new _TaskListContents(viewModel),
@@ -120,15 +121,15 @@ class _TasksViewModel {
   }
 }
 
-class TasksFilterPopupMenu extends StatelessWidget {
+class _TasksFilterPopupMenu extends StatelessWidget {
   final ValueChanged<TasksFilter> _onChanged;
 
-  TasksFilterPopupMenu(this._onChanged);
+  _TasksFilterPopupMenu(this._onChanged);
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    final itemTitles = <TasksFilter, String>{
+    final items = <TasksFilter, String>{
       TasksFilter.all: localizations.todoListFilterAll,
       TasksFilter.active: localizations.todoListFilterActive,
       TasksFilter.completed: localizations.todoListFilterCompleted,
@@ -138,15 +139,40 @@ class TasksFilterPopupMenu extends StatelessWidget {
         Icons.filter_list,
         color: Colors.white,
       ),
-      itemBuilder: (context) {
-        return TasksFilter.values.map((filter) {
-          return new PopupMenuItem(
-            value: filter,
-            child: new Text(itemTitles[filter]),
-          );
-        }).toList();
-      },
+      itemBuilder: (context) => items.entries.map((entry) {
+            return new PopupMenuItem<TasksFilter>(
+              value: entry.key,
+              child: new Text(entry.value),
+            );
+          }).toList(),
       onSelected: _onChanged,
+    );
+  }
+}
+
+enum _OverflowMenuItem {
+  changeTasksSortBy,
+  clearCompletedTasks,
+}
+
+class _OverflowPopupMenu extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    final items = {
+      _OverflowMenuItem.changeTasksSortBy: localizations.todoListSortBy,
+      _OverflowMenuItem.clearCompletedTasks:
+          localizations.todoListClearCompleted,
+    };
+    return new PopupMenuButton<_OverflowMenuItem>(
+      itemBuilder: (context) => items.entries.map((entry) {
+        return new PopupMenuItem(
+          value: entry.key,
+            child: new Text(entry.value),
+        );
+      }).toList(),
+      onSelected: (menuItem) {},
     );
   }
 }

@@ -37,6 +37,10 @@ class AppLocalizations {
 
   String get todoListFilterCompleted => Intl.message('Completed', name: 'todoListFilterCompleted');
 
+  String get todoListSortBy => Intl.message('Sort by', name: 'todoListSortBy');
+
+  String get todoListClearCompleted => Intl.message('Clear completed', name: 'todoListClearCompleted');
+
   String get newTask => Intl.message('New TO-DO', name: 'newTask');
 
   String get newTaskTitleLabel => Intl.message('Title', name: 'newTaskTitleLabel');

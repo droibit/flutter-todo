@@ -7,6 +7,8 @@
   "todoListFilterAll": "全て",
   "todoListFilterActive": "未完了",
   "todoListFilterCompleted": "完了済み",
+  "todoListSortBy": "並び順",
+  "todoListClearCompleted": "完了済みのクリア",
   "noTasks": "TO-DOなし",
   "newTask": "新規TO-DO",
   "newTaskTitleLabel": "タイトル",

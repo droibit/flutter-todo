@@ -8,6 +8,8 @@
   "todoListFilterAll": "All",
   "todoListFilterActive": "Active",
   "todoListFilterCompleted": "Completed",
+  "todoListSortBy": "Sort by",
+  "todoListClearCompleted": "Clear completed",
   "newTask": "New TO-DO",
   "newTaskTitleLabel": "Title",
   "newTaskTitleValidationError": "Title is required.",
