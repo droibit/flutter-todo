@@ -14,6 +14,15 @@ List<Middleware<AppState>> createTaskMiddlewares(
     new TypedMiddleware<AppState, CreateTaskAction>(
       _createTaskMiddleware(taskRepository),
     ),
+    new TypedMiddleware<AppState, ActivateTaskAction>(
+      _activateTaskMiddleware(taskRepository),
+    ),
+    new TypedMiddleware<AppState, CompleteTaskAction>(
+      _completeTaskMiddleware(taskRepository),
+    ),
+    new TypedMiddleware<AppState, DeleteTaskAction>(
+      _completeTaskMiddleware(taskRepository),
+    ),
   ];
 }
 
@@ -34,6 +43,30 @@ Middleware<AppState> _createTaskMiddleware(TaskRepository taskRepository) {
       debugPrint("$e");
       next(new OnCreateTaskAction(new CreateTask.error()));
     }
+  };
+}
+
+Middleware<AppState> _activateTaskMiddleware(TaskRepository taskRepository) {
+  return (Store<AppState> store, dynamic action, NextDispatcher next) async {
+    final task = (action as HasTask).task;
+    await taskRepository.activateTask(task.id);
+    next(new UpdateTaskAction(task.copy(completed: false)));
+  };
+}
+
+Middleware<AppState> _completeTaskMiddleware(TaskRepository taskRepository) {
+  return (Store<AppState> store, dynamic action, NextDispatcher next) async {
+    final task = (action as HasTask).task;
+    await taskRepository.completeTask(task.id);
+    next(new UpdateTaskAction(task.copy(completed: true)));
+  };
+}
+
+Middleware<AppState> _deleteTaskMiddleware(TaskRepository taskRepository) {
+  return (Store<AppState> store, dynamic action, NextDispatcher next) async {
+    final task = (action as HasTask).task;
+    await taskRepository.deleteTask(task.id);
+    next(action);
   };
 }
 
