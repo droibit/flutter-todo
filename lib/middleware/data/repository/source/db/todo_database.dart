@@ -13,6 +13,12 @@ abstract class TodoDatabase {
   Future<bool> createTask(TaskEntity entity);
 
   Future<List<TaskEntity>> getTasks();
+
+  Future<bool> activateTask(String id);
+
+  Future<bool> completeTask(String id);
+
+  Future<bool> deleteTask(String id);
 }
 
 class TodoDatabaseImpl implements TodoDatabase {
@@ -55,6 +61,40 @@ class TodoDatabaseImpl implements TodoDatabase {
     final db = await this.db;
     final entityMaps = await db.query(TaskEntity.table);
     return entityMaps.map((m) => new TaskEntity.fromMap(m)).toList();
+  }
+
+  @override
+  Future<bool> activateTask(String id) async {
+    final db = await this.db;
+    final updateCount = await db.update(
+      TaskEntity.table,
+      {TaskEntity.columnCompleted: false},
+      where: "${TaskEntity.columnId} = ?",
+      whereArgs: [id],
+    );
+    return updateCount > 0;
+  }
+
+  @override
+  Future<bool> completeTask(String id) async {
+    final db = await this.db;
+    final updateCount = await db.update(
+      TaskEntity.table,
+      {TaskEntity.columnCompleted: true},
+      where: "${TaskEntity.columnId} = ?",
+      whereArgs: [id],
+    );
+    return updateCount > 0;
+  }
+
+  @override
+  Future<bool> deleteTask(String id) async {
+    final db = await this.db;
+    final deletedCount = await db.delete(
+        TaskEntity.table,
+    );
+    // Successful if task has already been deleted.
+    return deletedCount >= 0;
   }
 
   Future _onCreate(Database db, int newVersion) async {

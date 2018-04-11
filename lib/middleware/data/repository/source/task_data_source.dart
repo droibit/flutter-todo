@@ -11,6 +11,12 @@ abstract class TaskDataSource {
   Future<Task> createTask(String title, String description);
 
   Future<List<Task>> getTasks();
+
+  Future<bool> activateTask(String taskId);
+
+  Future<bool> completeTask(String taskId);
+
+  Future<bool> deleteTask(String taskId);
 }
 
 class LocalTaskDataSource extends Object
@@ -46,6 +52,27 @@ class LocalTaskDataSource extends Object
     final entities = await _db.getTasks();
     final tasks = entities.map(convertToModel);
     return new List.unmodifiable(tasks);
+  }
+
+  @override
+  Future<bool> completeTask(String taskId) async {
+    final successful = await _db.completeTask(taskId);
+    debugPrint("Complete: $successful, entryId: $taskId");
+    return successful;
+  }
+
+  @override
+  Future<bool> activateTask(String taskId) async {
+    final successful = await _db.activateTask(taskId);
+    debugPrint("Activate: $successful, entryId: $taskId");
+    return successful;
+  }
+
+  @override
+  Future<bool> deleteTask(String taskId) async {
+    final successful = await _db.deleteTask(taskId);
+    debugPrint("Delete: $successful, entryId: $taskId");
+    return successful;
   }
 }
 

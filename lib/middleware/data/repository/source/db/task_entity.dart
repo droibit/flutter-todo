@@ -36,9 +36,9 @@ class TaskEntity {
 
   static const table = _tableName;
 
-  static const columnTimestamp = _timestamp;
+  static const columnId = _id;
 
-  static const columnTitle = _title;
+  static const columnCompleted = _completed;
 
   final String id;
 

@@ -1,24 +1,23 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-
 import '../../../model/task.dart';
 import 'source/task_data_source.dart';
 
+// TODO: Error handling.
 abstract class TaskRepository {
   Future<Task> createTask(String title, String description);
 
   Future<List<Task>> getTasks();
 
-  void refreshTask();
+  Future<void> activateTask(String taskId);
+
+  Future<void> completeTask(String taskId);
+
+  Future<void> deleteTask(String taskId);
 }
 
 class TaskRepositoryImpl implements TaskRepository {
   final TaskDataSource _dataSource;
-
-  final _cache = new Map<String, Task>();
-
-  bool _cacheIsDirty = false;
 
   TaskRepositoryImpl(this._dataSource);
 
@@ -26,33 +25,31 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<Task> createTask(String title, String description) async {
     assert(title != null);
 
-    final newTask = await _dataSource.createTask(title, description);
-    _cache[newTask.id] = newTask;
-    return newTask;
+    return await _dataSource.createTask(title, description);
     // .catchError((error) => ...);
   }
 
   @override
   Future<List<Task>> getTasks() async {
-    if (_cache.isNotEmpty && !_cacheIsDirty) {
-      return new List.unmodifiable(_cache.values);
-    }
-
     final tasks = await _dataSource.getTasks();
-    _refreshCache(tasks);
     return new List.unmodifiable(tasks);
   }
 
   @override
-  void refreshTask() {
-    _cacheIsDirty = true;
+  Future<void> activateTask(String taskId) async {
+    assert(taskId != null);
+    await _dataSource.activateTask(taskId);
   }
 
-  void _refreshCache(List<Task> tasks) {
-    _cache.clear();
-    tasks.forEach((t) => _cache[t.id] = t);
-    debugPrint("Cached tasks: $tasks");
+  @override
+  Future<void> completeTask(String taskId) async {
+    assert(taskId != null);
+    await _dataSource.completeTask(taskId);
+  }
 
-    _cacheIsDirty = false;
+  @override
+  Future<void> deleteTask(String taskId) async {
+    assert(taskId != null);
+    await _dataSource.deleteTask(taskId);
   }
 }
