@@ -54,3 +54,7 @@ class DeleteTaskAction extends HasTask {
   DeleteTaskAction(Task task) : super(task);
 }
 
+class UpdateTaskAction extends HasTask {
+
+  UpdateTaskAction(Task task) : super(task);
+}
