@@ -1,55 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 
 import '../../action/task_action.dart';
 import '../../i10n/app_localizations.dart';
 import '../../model/model.dart';
 import '../app_drawer.dart';
 import 'new_task_page.dart';
-
-class _TasksViewModel {
-  final List<Task> tasks;
-
-  final TasksFilter filter;
-
-  final ValueChanged<TasksFilter> onFilterChanged;
-
-  factory _TasksViewModel.from(Store<AppState> store) {
-    final currentFilter = store.state.tasksFilter;
-    return new _TasksViewModel._internal(
-        tasks: store.state.tasks,
-        filter: store.state.tasksFilter,
-        onFilterChanged: (newFilter) {
-          if (currentFilter != newFilter) {
-            store.dispatch(new ChangeTasksFilterAction(newFilter));
-            debugPrint("#onFilterChanged($newFilter)");
-          }
-        },
-    );
-  }
-
-  _TasksViewModel._internal({
-    @required List<Task> tasks,
-    @required this.filter,
-    @required this.onFilterChanged,
-  })
-      : this.tasks = _filterTask(tasks, filter);
-
-  static List<Task> _filterTask(List<Task> src, TasksFilter filter) {
-    return src.where((task) {
-      switch (filter) {
-        case TasksFilter.all:
-          return true;
-        case TasksFilter.active:
-          return task.isActive;
-        case TasksFilter.completed:
-          return task.completed;
-      }
-    }).toList(growable: false);
-  }
-}
 
 class TasksPage extends StatelessWidget {
   TasksPage({Key key}) : super(key: key);
@@ -96,22 +54,73 @@ class TasksPage extends StatelessWidget {
         .then((successful) {
       if (successful != null && successful) {
         _showSnackbar(
-            context, AppLocalizations
-            .of(context)
-            .newTaskSuccessfulToCreate);
+            context, AppLocalizations.of(context).newTaskSuccessfulToCreate);
       }
     });
   }
 
   void _showSnackbar(BuildContext context, String message) {
-    Scaffold.of(context).showSnackBar(new SnackBar(
-      content: new Text(message),
-    ));
+    Scaffold.of(context).showSnackBar(
+          new SnackBar(
+            content: new Text(message),
+          ),
+        );
+  }
+}
+
+class _TasksViewModel {
+  final List<Task> tasks;
+
+  final TasksFilter filter;
+
+  final Function(TasksFilter) onFilterChanged;
+
+  final Function(Task, bool) onTaskCheckChanged;
+
+  factory _TasksViewModel.from(Store<AppState> store) {
+    final currentFilter = store.state.tasksFilter;
+    return new _TasksViewModel._internal(
+      tasks: _filterTask(store.state.tasks, currentFilter),
+      filter: store.state.tasksFilter,
+      onFilterChanged: (newFilter) {
+        if (currentFilter != newFilter) {
+          store.dispatch(new ChangeTasksFilterAction(newFilter));
+          debugPrint("#onFilterChanged($newFilter)");
+        }
+      },
+      onTaskCheckChanged: (task, newValue) {
+        if (newValue) {
+          store.dispatch(new CompleteTaskAction(task));
+        } else {
+          store.dispatch(new ActivateTaskAction(task));
+        }
+        debugPrint("#onTaskCheckChanged($newValue, $task)");
+      },
+    );
+  }
+
+  _TasksViewModel._internal({
+    @required this.tasks,
+    @required this.filter,
+    @required this.onFilterChanged,
+    @required this.onTaskCheckChanged,
+  });
+
+  static List<Task> _filterTask(List<Task> src, TasksFilter filter) {
+    return src.where((task) {
+      switch (filter) {
+        case TasksFilter.all:
+          return true;
+        case TasksFilter.active:
+          return task.isActive;
+        case TasksFilter.completed:
+          return task.completed;
+      }
+    }).toList(growable: false);
   }
 }
 
 class TasksFilterPopupMenu extends StatelessWidget {
-
   final ValueChanged<TasksFilter> _onChanged;
 
   TasksFilterPopupMenu(this._onChanged);
@@ -132,8 +141,8 @@ class TasksFilterPopupMenu extends StatelessWidget {
       itemBuilder: (context) {
         return TasksFilter.values.map((filter) {
           return new PopupMenuItem(
-              value: filter,
-              child: new Text(itemTitles[filter]),
+            value: filter,
+            child: new Text(itemTitles[filter]),
           );
         }).toList();
       },
@@ -145,10 +154,10 @@ class TasksFilterPopupMenu extends StatelessWidget {
 class _TaskListContents extends StatelessWidget {
   final _TasksViewModel _viewModel;
 
-  _TaskListContents(this._viewModel, {
+  _TaskListContents(
+    this._viewModel, {
     Key key,
-  })
-      : assert(_viewModel != null),
+  })  : assert(_viewModel != null),
         super(key: key);
 
   @override
@@ -164,10 +173,10 @@ class _TaskListContents extends StatelessWidget {
 class _TaskListView extends StatelessWidget {
   final _TasksViewModel _viewModel;
 
-  _TaskListView(this._viewModel, {
+  _TaskListView(
+    this._viewModel, {
     Key key,
-  })
-      : assert(_viewModel != null),
+  })  : assert(_viewModel != null),
         super(key: key);
 
   @override
@@ -176,18 +185,20 @@ class _TaskListView extends StatelessWidget {
       child: new Column(
         children: <Widget>[
           _buildHeader(context),
-          _buildTasksList(context),
+          _buildTaskList(context),
         ],
       ),
     );
   }
 
-  Widget _buildTasksList(BuildContext context) {
+  Widget _buildTaskList(BuildContext context) {
     final tiles = _viewModel.tasks.map((task) {
       return new ListTile(
         leading: new Checkbox(
           value: task.completed,
-          onChanged: (newValue) {},
+          onChanged: (newValue) {
+            _viewModel.onTaskCheckChanged(task, newValue);
+          },
         ),
         title: new Text(
           task.title,
@@ -199,9 +210,9 @@ class _TaskListView extends StatelessWidget {
 
     final dividedTiles = ListTile
         .divideTiles(
-      context: context,
-      tiles: tiles,
-    )
+          context: context,
+          tiles: tiles,
+        )
         .toList(growable: false);
     return new Expanded(
       child: new ListView(
@@ -238,9 +249,7 @@ class _TaskListView extends StatelessWidget {
                 ),
                 new Material(
                   type: MaterialType.card,
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
+                  color: Theme.of(context).primaryColor,
                   child: new InkWell(
                     child: new Row(
                       children: <Widget>[
@@ -302,15 +311,11 @@ class _EmptyView extends StatelessWidget {
           new Icon(
             Icons.assignment_turned_in,
             size: 36.0,
-            color: Theme
-                .of(context)
-                .primaryColor,
+            color: Theme.of(context).primaryColor,
           ),
           new Padding(
             padding: const EdgeInsets.only(top: 12.0),
-            child: new Text(AppLocalizations
-                .of(context)
-                .noTasks),
+            child: new Text(AppLocalizations.of(context).noTasks),
           )
         ],
       ),
