@@ -17,12 +17,15 @@ class _TasksViewModel {
   final ValueChanged<TasksFilter> onFilterChanged;
 
   factory _TasksViewModel.from(Store<AppState> store) {
+    final currentFilter = store.state.tasksFilter;
     return new _TasksViewModel._internal(
         tasks: store.state.tasks,
         filter: store.state.tasksFilter,
         onFilterChanged: (newFilter) {
-          debugPrint("#onFilterChanged($newFilter)");
-//          store.dispatch(action)
+          if (currentFilter != newFilter) {
+            store.dispatch(new ChangeTasksFilterAction(newFilter));
+            debugPrint("#onFilterChanged($newFilter)");
+          }
         },
     );
   }
@@ -57,8 +60,7 @@ class TasksPage extends StatelessWidget {
     return new StoreConnector<AppState, _TasksViewModel>(
       distinct: true,
       onInit: (store) => store.dispatch(new GetTasksAction()),
-      converter: (store) =>
-      new _TasksViewModel.from(store),
+      converter: (store) => new _TasksViewModel.from(store),
       builder: (context, viewModel) {
         return new Scaffold(
           drawer: new AppDrawer(
