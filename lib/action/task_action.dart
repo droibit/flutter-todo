@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../model/task.dart';
+import '../model/model.dart';
 
 class GetTasksAction {}
 

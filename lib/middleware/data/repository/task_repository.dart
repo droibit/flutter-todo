@@ -19,7 +19,7 @@ abstract class TaskRepository {
 class TaskRepositoryImpl implements TaskRepository {
   final TaskDataSource _dataSource;
 
-  TaskRepositoryImpl(this._dataSource);
+  TaskRepositoryImpl(this._dataSource) : assert(_dataSource != null);
 
   @override
   Future<Task> createTask(String title, String description) async {
