@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-import '../../action/task_action.dart';
+import '../../action/action.dart';
 import '../../i10n/app_localizations.dart';
 import '../../model/model.dart';
+import '../../uitls/optional.dart';
 import '../app_drawer.dart';
 import 'new_task_page.dart';
 
@@ -29,7 +30,10 @@ class TasksPage extends StatelessWidget {
             elevation: 0.0,
             actions: <Widget>[
               new _TasksFilterPopupMenu(viewModel.onFilterChanged),
-              new _OverflowPopupMenu(),
+              new _OverflowPopupMenu(
+                  viewModel.tasksSortBy,
+                  viewModel.onClearCompletedTasksSelected,
+                  viewModel.onTasksSortByChanged),
             ],
           ),
           body: new _TaskListContents(viewModel),
@@ -74,37 +78,56 @@ class _TasksViewModel {
 
   final TasksFilter filter;
 
+  final Optional<TasksSortBy> tasksSortBy;
+
   final Function(TasksFilter) onFilterChanged;
 
   final Function(Task, bool) onTaskCheckChanged;
 
+  final Function() onClearCompletedTasksSelected;
+
+  final Function(TasksSortBy) onTasksSortByChanged;
+
   factory _TasksViewModel.from(Store<AppState> store) {
     final currentFilter = store.state.tasksFilter;
+    final currentTaksSortBy = store.state.tasksSortBy;
     return new _TasksViewModel._internal(
-      tasks: _filterTask(store.state.tasks, currentFilter),
-      filter: store.state.tasksFilter,
-      onFilterChanged: (newFilter) {
-        if (currentFilter != newFilter) {
-          store.dispatch(new ChangeTasksFilterAction(newFilter));
-          debugPrint("#onFilterChanged($newFilter)");
-        }
-      },
-      onTaskCheckChanged: (task, newValue) {
-        if (newValue) {
-          store.dispatch(new CompleteTaskAction(task));
-        } else {
-          store.dispatch(new ActivateTaskAction(task));
-        }
-        debugPrint("#onTaskCheckChanged($newValue, $task)");
-      },
-    );
+        tasks: _filterTask(store.state.tasks, currentFilter),
+        filter: store.state.tasksFilter,
+        tasksSortBy: store.state.tasksSortBy,
+        onFilterChanged: (newFilter) {
+          if (currentFilter != newFilter) {
+            store.dispatch(new ChangeTasksFilterAction(newFilter));
+            debugPrint("#onFilterChanged($newFilter)");
+          }
+        },
+        onTaskCheckChanged: (task, newValue) {
+          if (newValue) {
+            store.dispatch(new CompleteTaskAction(task));
+          } else {
+            store.dispatch(new ActivateTaskAction(task));
+          }
+          debugPrint("#onTaskCheckChanged($newValue, $task)");
+        },
+        onClearCompletedTasksSelected: () {
+          debugPrint("#onClearCompletedTasksSelected()");
+        },
+        onTasksSortByChanged: (newTasksSortBy) {
+          if (currentTaksSortBy != Optional.of(newTasksSortBy)) {
+            // TODO: dispatch action.
+          }
+          debugPrint("#onTasksSortByChanged()");
+        });
   }
 
   _TasksViewModel._internal({
     @required this.tasks,
     @required this.filter,
+    @required this.tasksSortBy,
     @required this.onFilterChanged,
     @required this.onTaskCheckChanged,
+    @required this.onClearCompletedTasksSelected,
+    @required this.onTasksSortByChanged,
   });
 
   static List<Task> _filterTask(List<Task> src, TasksFilter filter) {
@@ -122,7 +145,7 @@ class _TasksViewModel {
 }
 
 class _TasksFilterPopupMenu extends StatelessWidget {
-  final ValueChanged<TasksFilter> _onChanged;
+  final Function(TasksFilter) _onChanged;
 
   _TasksFilterPopupMenu(this._onChanged);
 
@@ -156,6 +179,14 @@ enum _OverflowMenuItem {
 }
 
 class _OverflowPopupMenu extends StatelessWidget {
+  final Optional<TasksSortBy> _tasksSortBy;
+
+  final Function() _onClearCompletedTasksSelected;
+
+  final Function(TasksSortBy) _onTasksSortByChanged;
+
+  _OverflowPopupMenu(this._tasksSortBy, this._onClearCompletedTasksSelected,
+      this._onTasksSortByChanged);
 
   @override
   Widget build(BuildContext context) {
@@ -167,13 +198,69 @@ class _OverflowPopupMenu extends StatelessWidget {
     };
     return new PopupMenuButton<_OverflowMenuItem>(
       itemBuilder: (context) => items.entries.map((entry) {
-        return new PopupMenuItem(
-          value: entry.key,
-            child: new Text(entry.value),
-        );
-      }).toList(),
-      onSelected: (menuItem) {},
+            return new PopupMenuItem(
+              value: entry.key,
+              child: new Text(entry.value),
+            );
+          }).toList(),
+      onSelected: (menuItem) {
+        switch (menuItem) {
+          case _OverflowMenuItem.clearCompletedTasks:
+            _onClearCompletedTasksSelected();
+            break;
+          case _OverflowMenuItem.changeTasksSortBy:
+            _tasksSortBy
+                .ifPresent((v) => showSortByTasksBottomSheet(context, v));
+            break;
+        }
+      },
     );
+  }
+
+  void showSortByTasksBottomSheet(
+      BuildContext context, TasksSortBy tasksSortBy) async {
+    final localizations = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+
+    final items = <SortBy, String>{
+      SortBy.title: localizations.todoListSortByTitle,
+      SortBy.created_date: localizations.todoListSortByCreatedDate
+    }.entries.map((entry) {
+      return new ListTile(
+        title: new Text(entry.value),
+        onTap: () {
+          Navigator.of(context).pop(entry.key);
+        },
+        trailing: (entry.key == tasksSortBy.sortBy)
+            ? new Icon(
+                Icons.check,
+                color: theme.primaryColor,
+              )
+            : null,
+      );
+    });
+
+    final selectedSortBy = await showModalBottomSheet<SortBy>(
+      context: context,
+      builder: (context) {
+        return new Container(
+            child: new ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            new ListTile(
+              title: new Text(
+                localizations.todoListSortBy,
+                style: new TextStyle(color: theme.primaryColorDark),
+              ),
+            ),
+          ]..addAll(items),
+        ));
+      },
+    );
+
+    if (selectedSortBy != null) {
+      _onTasksSortByChanged(tasksSortBy.copyWith(sortBy: selectedSortBy));
+    }
   }
 }
 
