@@ -1,6 +1,8 @@
 import '../model/model.dart';
+import 'create_task_reducer.dart';
 import 'package_info_reducer.dart';
 import 'task_reducer.dart';
+import 'tasks_filter_reducer.dart';
 
 AppState appStateReducer(AppState state, dynamic action) {
   return new AppState(

@@ -1,8 +1,7 @@
 import 'package:redux/redux.dart';
 
 import '../action/task_action.dart';
-import '../model/task.dart';
-import '../uitls/optional.dart';
+import '../model/model.dart';
 
 final tasksReducer = combineReducers<List<Task>>([
   new TypedReducer<List<Task>, OnGetTaskAction>(_getTasks),
@@ -27,29 +26,4 @@ List<Task> _updateTasks(List<Task> state, UpdateTaskAction action) {
   return state
       .map((task) => task.id == updatedTask.id ? updatedTask : task)
       .toList(growable: false);
-}
-
-final createTaskReducer = combineReducers<Optional<CreateTask>>([
-  new TypedReducer<Optional<CreateTask>, OnCreateTaskAction>(_createTask),
-  new TypedReducer<Optional<CreateTask>, CreateTaskResetAction>(
-      _resetCreateTask)
-]);
-
-Optional<CreateTask> _createTask(
-    Optional<CreateTask> state, OnCreateTaskAction action) {
-  return new Optional.of(action.createTask);
-}
-
-Optional<CreateTask> _resetCreateTask(
-    Optional<CreateTask> state, CreateTaskResetAction action) {
-  return const Optional.absent();
-}
-
-final tasksFilterReducer = combineReducers<TasksFilter>([
-  new TypedReducer<TasksFilter, ChangeTasksFilterAction>(_changeTaskFilter),
-]);
-
-TasksFilter _changeTaskFilter(
-    TasksFilter state, ChangeTasksFilterAction action) {
-  return action.filter;
 }
