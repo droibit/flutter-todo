@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2018-04-12T01:34:07.319823",
+  "@@last_modified": "2018-04-13T01:06:20.526537",
   "title": "TO-DO",
   "@title": {
     "type": "text",
@@ -52,6 +52,16 @@
   },
   "todoListClearCompleted": "Clear completed",
   "@todoListClearCompleted": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "todoListSortByTitle": "Title",
+  "@todoListSortByTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "todoListSortByCreatedDate": "Created Date",
+  "@todoListSortByCreatedDate": {
     "type": "text",
     "placeholders": {}
   },

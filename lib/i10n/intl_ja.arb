@@ -9,6 +9,8 @@
   "todoListFilterCompleted": "完了済み",
   "todoListSortBy": "並び順",
   "todoListClearCompleted": "完了済みのクリア",
+  "todoListSortByTitle": "タイトル",
+  "todoListSortByCreatedDate": "作成日",
   "noTasks": "TO-DOなし",
   "newTask": "新規TO-DO",
   "newTaskTitleLabel": "タイトル",

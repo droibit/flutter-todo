@@ -41,6 +41,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "todoListHeaderActive" : MessageLookupByLibrary.simpleMessage("未完了のTO-DO"),
     "todoListHeaderAll" : MessageLookupByLibrary.simpleMessage("全てのTO-DO"),
     "todoListHeaderCompleted" : MessageLookupByLibrary.simpleMessage("完了済みのTO-DO"),
-    "todoListSortBy" : MessageLookupByLibrary.simpleMessage("並び順")
+    "todoListSortBy" : MessageLookupByLibrary.simpleMessage("並び順"),
+    "todoListSortByCreatedDate" : MessageLookupByLibrary.simpleMessage("作成日"),
+    "todoListSortByTitle" : MessageLookupByLibrary.simpleMessage("タイトル")
   };
 }

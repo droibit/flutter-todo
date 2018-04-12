@@ -41,6 +41,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "todoListHeaderActive" : MessageLookupByLibrary.simpleMessage("Active TO-DOs"),
     "todoListHeaderAll" : MessageLookupByLibrary.simpleMessage("All TO-DOs"),
     "todoListHeaderCompleted" : MessageLookupByLibrary.simpleMessage("Completed TO-DOs"),
-    "todoListSortBy" : MessageLookupByLibrary.simpleMessage("Sort by")
+    "todoListSortBy" : MessageLookupByLibrary.simpleMessage("Sort by"),
+    "todoListSortByCreatedDate" : MessageLookupByLibrary.simpleMessage("Created Date"),
+    "todoListSortByTitle" : MessageLookupByLibrary.simpleMessage("Title")
   };
 }

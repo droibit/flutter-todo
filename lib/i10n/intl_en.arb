@@ -10,6 +10,8 @@
   "todoListFilterCompleted": "Completed",
   "todoListSortBy": "Sort by",
   "todoListClearCompleted": "Clear completed",
+  "todoListSortByTitle": "Title",
+  "todoListSortByCreatedDate": "Created Date",
   "newTask": "New TO-DO",
   "newTaskTitleLabel": "Title",
   "newTaskTitleValidationError": "Title is required.",
