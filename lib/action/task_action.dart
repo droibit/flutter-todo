@@ -7,13 +7,11 @@ class GetTasksAction {}
 class OnGetTaskAction {
   final List<Task> tasks;
 
-  OnGetTaskAction(this.tasks) : assert(tasks != null);
-}
+  final TasksSortBy tasksSortBy;
 
-class ChangeTasksFilterAction {
-  final TasksFilter filter;
-
-  ChangeTasksFilterAction(this.filter);
+  OnGetTaskAction(this.tasks, this.tasksSortBy)
+      : assert(tasks != null),
+        assert(tasksSortBy != null);
 }
 
 class CreateTaskAction {
@@ -50,11 +48,9 @@ class ActivateTaskAction extends HasTask {
 }
 
 class DeleteTaskAction extends HasTask {
-
   DeleteTaskAction(Task task) : super(task);
 }
 
 class UpdateTaskAction extends HasTask {
-
   UpdateTaskAction(Task task) : super(task);
 }

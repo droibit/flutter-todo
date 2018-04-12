@@ -1,6 +1,6 @@
 import 'package:redux/redux.dart';
 
-import '../action/task_action.dart';
+import '../action/tasks_filter_action.dart';
 import '../model/tasks_filter.dart';
 
 final tasksFilterReducer = combineReducers<TasksFilter>([

@@ -12,7 +12,7 @@ abstract class UserSettingsRepository {
 }
 
 const _defaultTasksSortBy = const TasksSortBy(
-    sortBy: SortBy.created_at,
+    sortBy: SortBy.created_date,
     order: Order.asc,
 );
 

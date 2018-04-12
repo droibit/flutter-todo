@@ -4,12 +4,13 @@ import 'package:redux/redux.dart';
 import '../action/task_action.dart';
 import '../model/model.dart';
 import 'data/repository/task_repository.dart';
+import 'data/repository/user_settings_repository.dart';
 
 List<Middleware<AppState>> createTaskMiddlewares(
-    TaskRepository taskRepository) {
+    TaskRepository taskRepository, UserSettingsRepository userSettingsRepository) {
   return <Middleware<AppState>>[
     new TypedMiddleware<AppState, GetTasksAction>(
-      _getTasksMiddleware(taskRepository),
+      _getTasksMiddleware(taskRepository, userSettingsRepository),
     ),
     new TypedMiddleware<AppState, CreateTaskAction>(
       _createTaskMiddleware(taskRepository),
@@ -26,9 +27,12 @@ List<Middleware<AppState>> createTaskMiddlewares(
   ];
 }
 
-Middleware<AppState> _getTasksMiddleware(TaskRepository taskRepository) {
+Middleware<AppState> _getTasksMiddleware(
+    TaskRepository taskRepository, UserSettingsRepository userSettingsRepository) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
-    _dispatchGetTasksAction(next, taskRepository);
+    final tasks = taskRepository.getTasks();
+    final sortBy = userSettingsRepository.loadTasksSortBy();
+    next(new OnGetTaskAction(await tasks, await sortBy));
   };
 }
 
@@ -68,10 +72,4 @@ Middleware<AppState> _deleteTaskMiddleware(TaskRepository taskRepository) {
     await taskRepository.deleteTask(task.id);
     next(action);
   };
-}
-
-void _dispatchGetTasksAction(
-    NextDispatcher next, TaskRepository taskRepository) async {
-  final tasks = await taskRepository.getTasks();
-  next(new OnGetTaskAction(tasks));
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-enum SortBy { title, created_at }
+enum SortBy { title, created_date }
 
 enum Order { asc, desc }
 
@@ -20,6 +20,16 @@ class TasksSortBy {
     return new TasksSortBy(
       sortBy: sortBy,
       order: order == Order.asc ? Order.desc : Order.asc,
+    );
+  }
+
+  TasksSortBy copyWith({
+    SortBy sortBy,
+    Order order,
+  }) {
+    return new TasksSortBy(
+      sortBy: sortBy ?? this.sortBy,
+      order: order ?? this.order,
     );
   }
 
