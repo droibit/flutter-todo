@@ -6,7 +6,8 @@ import '../model/model.dart';
 final tasksReducer = combineReducers<List<Task>>([
   new TypedReducer<List<Task>, OnGetTaskAction>(_getTasks),
   new TypedReducer<List<Task>, OnCreateTaskAction>(_createNewTasks),
-  new TypedReducer<List<Task>, UpdateTaskAction>(_updateTasks)
+  new TypedReducer<List<Task>, UpdateTaskAction>(_updateTasks),
+  new TypedReducer<List<Task>, ClearCompletedTasksAction>(_clearCompletedTasks),
 ]);
 
 List<Task> _getTasks(List<Task> state, OnGetTaskAction action) {
@@ -26,4 +27,9 @@ List<Task> _updateTasks(List<Task> state, UpdateTaskAction action) {
   return state
       .map((task) => task.id == updatedTask.id ? updatedTask : task)
       .toList(growable: false);
+}
+
+List<Task> _clearCompletedTasks(
+    List<Task> state, ClearCompletedTasksAction action) {
+  return state.where((task) => !task.completed).toList(growable: false);
 }

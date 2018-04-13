@@ -14,6 +14,8 @@ abstract class TaskRepository {
   Future<void> completeTask(String taskId);
 
   Future<void> deleteTask(String taskId);
+
+  Future<void> clearCompletedTasks();
 }
 
 class TaskRepositoryImpl implements TaskRepository {
@@ -51,5 +53,10 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<void> deleteTask(String taskId) async {
     assert(taskId != null);
     await _dataSource.deleteTask(taskId);
+  }
+
+  @override
+  Future<void> clearCompletedTasks() async {
+    await _dataSource.clearCompletedTasks();
   }
 }

@@ -19,6 +19,8 @@ abstract class TodoDatabase {
   Future<bool> completeTask(String id);
 
   Future<bool> deleteTask(String id);
+
+  Future<int> clearCompletedTask();
 }
 
 class TodoDatabaseImpl implements TodoDatabase {
@@ -91,10 +93,24 @@ class TodoDatabaseImpl implements TodoDatabase {
   Future<bool> deleteTask(String id) async {
     final db = await this.db;
     final deletedCount = await db.delete(
-        TaskEntity.table,
+      TaskEntity.table,
+      where: "${TaskEntity.columnId} = ?",
+      whereArgs: [id],
     );
     // Successful if task has already been deleted.
     return deletedCount >= 0;
+  }
+
+  @override
+  Future<int> clearCompletedTask() async {
+    final db = await this.db;
+    final deletedCount = await db.delete(
+      TaskEntity.table,
+      where: "${TaskEntity.columnCompleted} = ?",
+      whereArgs: [1],
+    );
+    // Successful if task has already been deleted.
+    return deletedCount;
   }
 
   Future _onCreate(Database db, int newVersion) async {

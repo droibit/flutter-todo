@@ -30,9 +30,10 @@ class TasksPage extends StatelessWidget {
             actions: <Widget>[
               new _TasksFilterPopupMenu(viewModel.onFilterChanged),
               new _OverflowPopupMenu(
-                  viewModel.tasksSortBy,
-                  viewModel.onClearCompletedTasksSelected,
-                  viewModel.onTasksSortByChanged),
+                viewModel.tasksSortBy,
+                viewModel.onClearCompletedTasksSelected,
+                viewModel.onTasksSortByChanged,
+              ),
             ],
           ),
           body: new _TaskListContents(viewModel),

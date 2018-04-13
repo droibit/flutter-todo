@@ -24,6 +24,9 @@ List<Middleware<AppState>> createTaskMiddlewares(
     new TypedMiddleware<AppState, DeleteTaskAction>(
       _completeTaskMiddleware(taskRepository),
     ),
+    new TypedMiddleware<AppState, ClearCompletedTasksAction>(
+        _clearCompletedTasksMiddleware(taskRepository),
+    )
   ];
 }
 
@@ -70,6 +73,13 @@ Middleware<AppState> _deleteTaskMiddleware(TaskRepository taskRepository) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
     final task = (action as HasTask).task;
     await taskRepository.deleteTask(task.id);
+    next(action);
+  };
+}
+
+Middleware<AppState> _clearCompletedTasksMiddleware(TaskRepository taskRepository) {
+  return (Store<AppState> store, dynamic action, NextDispatcher next) async {
+    await taskRepository.clearCompletedTasks();
     next(action);
   };
 }
