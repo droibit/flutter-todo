@@ -9,12 +9,19 @@ import '../../uitls/optional.dart';
 
 typedef void _OnSubmitCallback(String title, String description);
 
-class NewTaskPage extends StatelessWidget {
+class NewTaskPage extends StatefulWidget {
+
+  NewTaskPage({Key key}) : super(key: key);
+
+  @override
+  State createState() => new NewTaskPageState();
+}
+
+class NewTaskPageState extends State<NewTaskPage> {
+
   final _titleController = new TextEditingController();
 
   final _descriptionController = new TextEditingController();
-
-  NewTaskPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +75,7 @@ class NewTaskPage extends StatelessWidget {
               localizations.newTaskDescLabel,
               textAlign: TextAlign.start,
               style:
-                  theme.textTheme.caption.copyWith(color: theme.primaryColor),
+              theme.textTheme.caption.copyWith(color: theme.primaryColor),
             ),
             new TextField(
               controller: _descriptionController,
