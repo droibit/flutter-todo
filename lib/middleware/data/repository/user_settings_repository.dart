@@ -1,34 +1,29 @@
 import 'dart:async';
 
-import 'source/user_settings_data_source.dart';
 import '../../../model/tasks_sort_by.dart';
+import 'source/user_settings_data_source.dart';
 
 // TODO: Error handling.
 abstract class UserSettingsRepository {
-
   Future<TasksSortBy> loadTasksSortBy();
 
   Future<void> storeTasksSortBy(TasksSortBy tasksSortBy);
 }
 
 const _defaultTasksSortBy = const TasksSortBy(
-    sortBy: SortBy.created_date,
-    order: Order.asc,
+  sortBy: SortBy.created_date,
+  order: Order.asc,
 );
 
 class UserSettingsRepositoryImpl implements UserSettingsRepository {
-
   UserSettingsDataSource _dataSource;
 
-  UserSettingsRepositoryImpl(this._dataSource) :
-      assert(_dataSource != null);
+  UserSettingsRepositoryImpl(this._dataSource) : assert(_dataSource != null);
 
   @override
   Future<void> storeTasksSortBy(TasksSortBy tasksSortBy) async {
     await _dataSource.setTasksSortByIndex(
-        tasksSortBy.sortBy.index,
-        tasksSortBy.order.index
-    );
+        tasksSortBy.sortBy.index, tasksSortBy.order.index);
   }
 
   @override
@@ -37,9 +32,12 @@ class UserSettingsRepositoryImpl implements UserSettingsRepository {
       _dataSource.getTasksSortByIndex(),
       _dataSource.getTasksSortByOrderIndex()
     ]);
+    if (indices.any((i) => i == null)) {
+      return null;
+    }
     return new TasksSortBy(
-        sortBy: SortBy.values[indices[0] ?? _defaultTasksSortBy.sortBy.index],
-        order: Order.values[indices[1] ?? _defaultTasksSortBy.order.index],
+      sortBy: SortBy.values[indices[0]],
+      order: Order.values[indices[1]],
     );
   }
 }

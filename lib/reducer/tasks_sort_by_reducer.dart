@@ -3,23 +3,24 @@ import 'package:redux/redux.dart';
 import '../action/task_action.dart';
 import '../action/tasks_sort_by_action.dart';
 import '../model/tasks_sort_by.dart';
-import '../uitls/optional.dart';
 
-final tasksSortByReducer = combineReducers<Optional<TasksSortBy>>([
-  new TypedReducer<Optional<TasksSortBy>, OnGetTaskAction>(
-    _getTasks
+final tasksSortByReducer = combineReducers<TasksSortBy>([
+  new TypedReducer<TasksSortBy, OnGetTaskAction>(
+    _getTasksSortBy,
   ),
-  new TypedReducer<Optional<TasksSortBy>, ChangeTasksSortByAction>(
-    _tasksSortBy,
+  new TypedReducer<TasksSortBy, ChangeTasksSortByAction>(
+    _changeTasksSortBy,
   ),
 ]);
 
-Optional<TasksSortBy> _getTasks(
-    Optional<TasksSortBy> state, OnGetTaskAction action) {
-  return new Optional.of(action.tasksSortBy);
+TasksSortBy _getTasksSortBy(TasksSortBy state, OnGetTaskAction action) {
+  if (action == null) {
+    return state;
+  }
+  return action.tasksSortBy;
 }
 
-Optional<TasksSortBy> _tasksSortBy(
-    Optional<TasksSortBy> state, ChangeTasksSortByAction action) {
-  return new Optional.of(action.tasksSortBy);
+TasksSortBy _changeTasksSortBy(
+    TasksSortBy state, ChangeTasksSortByAction action) {
+  return action.tasksSortBy;
 }

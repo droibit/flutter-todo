@@ -12,7 +12,7 @@ class AppState {
 
   final TasksFilter tasksFilter;
 
-  final Optional<TasksSortBy> tasksSortBy;
+  final TasksSortBy tasksSortBy;
 
   final Optional<CreateTask> createTask;
 
@@ -21,7 +21,8 @@ class AppState {
   const AppState({
     this.tasks = const [],
     this.tasksFilter = TasksFilter.all,
-    this.tasksSortBy = const Optional.absent(),
+    this.tasksSortBy =
+        const TasksSortBy(sortBy: SortBy.created_date, order: Order.asc),
     this.createTask = const Optional.absent(),
     this.packageInfo = const Optional.absent(),
   });
@@ -29,7 +30,7 @@ class AppState {
   AppState copyWith({
     List<Task> tasks,
     TasksFilter tasksFilter,
-    Optional<TasksSortBy> tasksSortBy,
+    TasksSortBy tasksSortBy,
     Optional<CreateTask> createTask,
     Optional<PackageInfo> packageInfo,
   }) {

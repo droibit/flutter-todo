@@ -6,7 +6,6 @@ import 'package:redux/redux.dart';
 import '../../action/action.dart';
 import '../../i10n/app_localizations.dart';
 import '../../model/model.dart';
-import '../../uitls/optional.dart';
 import '../app_drawer.dart';
 import 'new_task_page.dart';
 
@@ -73,12 +72,14 @@ class TasksPage extends StatelessWidget {
   }
 }
 
+typedef int _Compare<T>(T a, T b);
+
 class _TasksViewModel {
   final List<Task> tasks;
 
   final TasksFilter filter;
 
-  final Optional<TasksSortBy> tasksSortBy;
+  final TasksSortBy tasksSortBy;
 
   final Function(TasksFilter) onFilterChanged;
 
@@ -90,9 +91,10 @@ class _TasksViewModel {
 
   factory _TasksViewModel.from(Store<AppState> store) {
     final currentFilter = store.state.tasksFilter;
-    final currentTaksSortBy = store.state.tasksSortBy;
+    final currentTasksSortBy = store.state.tasksSortBy;
     return new _TasksViewModel._internal(
-        tasks: _filterTask(store.state.tasks, currentFilter),
+        tasks: _filterAndSortTask(
+            store.state.tasks, currentFilter, currentTasksSortBy),
         filter: store.state.tasksFilter,
         tasksSortBy: store.state.tasksSortBy,
         onFilterChanged: (newFilter) {
@@ -113,8 +115,8 @@ class _TasksViewModel {
           debugPrint("#onClearCompletedTasksSelected()");
         },
         onTasksSortByChanged: (newTasksSortBy) {
-          if (currentTaksSortBy != Optional.of(newTasksSortBy)) {
-            // TODO: dispatch action.
+          if (currentTasksSortBy != newTasksSortBy) {
+            store.dispatch(new ChangeTasksSortByAction(newTasksSortBy));
           }
           debugPrint("#onTasksSortByChanged()");
         });
@@ -130,7 +132,8 @@ class _TasksViewModel {
     @required this.onTasksSortByChanged,
   });
 
-  static List<Task> _filterTask(List<Task> src, TasksFilter filter) {
+  static List<Task> _filterAndSortTask(
+      List<Task> src, TasksFilter filter, TasksSortBy sortBy) {
     return src.where((task) {
       switch (filter) {
         case TasksFilter.all:
@@ -140,7 +143,23 @@ class _TasksViewModel {
         case TasksFilter.completed:
           return task.completed;
       }
-    }).toList(growable: false);
+    }).toList(growable: false)
+      ..sort(_resolveCompare(sortBy));
+  }
+
+  static _Compare<Task> _resolveCompare(TasksSortBy tasksSortBy) {
+    switch (tasksSortBy.sortBy) {
+      case SortBy.title:
+        return (tasksSortBy.order == Order.asc)
+            ? (lhs, rhs) => lhs.title.compareTo(rhs.title)
+            : (lhs, rhs) => rhs.title.compareTo(lhs.title);
+      case SortBy.created_date:
+        return (tasksSortBy.order == Order.asc)
+            ? (lhs, rhs) => lhs.timestamp.compareTo(rhs.timestamp)
+            : (lhs, rhs) => rhs.timestamp.compareTo(lhs.timestamp);
+      default:
+        throw new AssertionError("invalid sort by: ${tasksSortBy.sortBy}");
+    }
   }
 }
 
@@ -179,7 +198,7 @@ enum _OverflowMenuItem {
 }
 
 class _OverflowPopupMenu extends StatelessWidget {
-  final Optional<TasksSortBy> _tasksSortBy;
+  final TasksSortBy _tasksSortBy;
 
   final Function() _onClearCompletedTasksSelected;
 
@@ -209,8 +228,7 @@ class _OverflowPopupMenu extends StatelessWidget {
             _onClearCompletedTasksSelected();
             break;
           case _OverflowMenuItem.changeTasksSortBy:
-            _tasksSortBy
-                .ifPresent((v) => showSortByTasksBottomSheet(context, v));
+            showSortByTasksBottomSheet(context, _tasksSortBy);
             break;
         }
       },
@@ -244,17 +262,18 @@ class _OverflowPopupMenu extends StatelessWidget {
       context: context,
       builder: (context) {
         return new Container(
-            child: new ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            new ListTile(
-              title: new Text(
-                localizations.todoListSortBy,
-                style: new TextStyle(color: theme.primaryColorDark),
+          child: new ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              new ListTile(
+                title: new Text(
+                  localizations.todoListSortBy,
+                  style: new TextStyle(color: theme.primaryColorDark),
+                ),
               ),
-            ),
-          ]..addAll(items),
-        ));
+            ]..addAll(items),
+          ),
+        );
       },
     );
 
@@ -297,21 +316,29 @@ class _TaskListView extends StatelessWidget {
     return new Container(
       child: new Column(
         children: <Widget>[
-          _buildHeader(context),
-          _buildTaskList(context),
+          _buildHeader(
+            context,
+            _viewModel.filter,
+            _viewModel.tasksSortBy,
+            _viewModel.onTasksSortByChanged,
+          ),
+          _buildTaskList(
+              context, _viewModel.tasks, _viewModel.onTaskCheckChanged),
         ],
       ),
     );
   }
 
-  Widget _buildTaskList(BuildContext context) {
-    final tiles = _viewModel.tasks.map((task) {
+  Widget _buildTaskList(
+    BuildContext context,
+    List<Task> tasks,
+    Function(Task, bool) onTaskCheckChanged,
+  ) {
+    final tiles = tasks.map((task) {
       return new ListTile(
         leading: new Checkbox(
           value: task.completed,
-          onChanged: (newValue) {
-            _viewModel.onTaskCheckChanged(task, newValue);
-          },
+          onChanged: (newValue) => onTaskCheckChanged(task, newValue),
         ),
         title: new Text(
           task.title,
@@ -334,9 +361,14 @@ class _TaskListView extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(
+    BuildContext context,
+    TasksFilter filter,
+    TasksSortBy tasksSortBy,
+    Function(TasksSortBy) onTasksSortByChanged,
+  ) {
     final theme = Theme.of(context);
-
+    final localizations = AppLocalizations.of(context);
     return new Material(
       color: theme.primaryColor,
       elevation: 4.0,
@@ -353,7 +385,7 @@ class _TaskListView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 new Text(
-                  resolveTitle(context, _viewModel.filter),
+                  _resolveTitle(localizations, filter),
                   style: new TextStyle(
                     color: Colors.white70,
                     fontSize: theme.textTheme.subhead.fontSize,
@@ -369,7 +401,7 @@ class _TaskListView extends StatelessWidget {
                         new Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: new Text(
-                            'Title',
+                            _resolveSortBy(localizations, tasksSortBy.sortBy),
                             style: new TextStyle(
                               color: Colors.white,
                               fontSize: theme.textTheme.subhead.fontSize,
@@ -379,14 +411,16 @@ class _TaskListView extends StatelessWidget {
                         new Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: new Icon(
-                            Icons.arrow_upward,
+                            _resolveOrderIcon(tasksSortBy.order),
                             size: 20.0,
                             color: Colors.white,
                           ),
                         ),
                       ],
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      onTasksSortByChanged(tasksSortBy.reverseOrder());
+                    },
                   ),
                 ),
               ],
@@ -397,8 +431,7 @@ class _TaskListView extends StatelessWidget {
     );
   }
 
-  String resolveTitle(BuildContext context, TasksFilter filter) {
-    final localizations = AppLocalizations.of(context);
+  String _resolveTitle(AppLocalizations localizations, TasksFilter filter) {
     switch (filter) {
       case TasksFilter.all:
         return localizations.todoListHeaderAll;
@@ -409,6 +442,21 @@ class _TaskListView extends StatelessWidget {
       default:
         throw new AssertionError("Invalid filter: $filter");
     }
+  }
+
+  String _resolveSortBy(AppLocalizations localizations, SortBy sortBy) {
+    switch (sortBy) {
+      case SortBy.title:
+        return localizations.todoListSortByTitle;
+      case SortBy.created_date:
+        return localizations.todoListSortByCreatedDate;
+      default:
+        throw new AssertionError("Invalid taskSortBy: $sortBy");
+    }
+  }
+
+  IconData _resolveOrderIcon(Order order) {
+    return order == Order.asc ? Icons.arrow_upward : Icons.arrow_downward;
   }
 }
 
