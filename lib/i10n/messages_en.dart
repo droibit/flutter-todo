@@ -32,6 +32,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "noTasks" : MessageLookupByLibrary.simpleMessage("No TO-DOs."),
     "settings" : MessageLookupByLibrary.simpleMessage("Settings"),
     "statistics" : MessageLookupByLibrary.simpleMessage("Statistics"),
+    "statisticsActiveTasks" : MessageLookupByLibrary.simpleMessage("Active TO-DOs:"),
+    "statisticsCompletedTasks" : MessageLookupByLibrary.simpleMessage("Completed TO-DOs:"),
     "title" : MessageLookupByLibrary.simpleMessage("TO-DO"),
     "todoList" : MessageLookupByLibrary.simpleMessage("TO-DO List"),
     "todoListClearCompleted" : MessageLookupByLibrary.simpleMessage("Clear completed"),

@@ -20,6 +20,8 @@
   "newTaskFailedToCreate": "Failed to create new TO-DO.",
   "newTaskSuccessfulToCreate": "TO-DO created.",
   "statistics": "Statistics",
+  "statisticsActiveTasks": "Active TO-DOs:",
+  "statisticsCompletedTasks": "Completed TO-DOs:",
   "settings": "Settings",
   "appCategory": "App",
   "buildVersionTitle": "Build version",

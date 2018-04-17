@@ -32,6 +32,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "noTasks" : MessageLookupByLibrary.simpleMessage("TO-DOなし"),
     "settings" : MessageLookupByLibrary.simpleMessage("設定"),
     "statistics" : MessageLookupByLibrary.simpleMessage("統計"),
+    "statisticsActiveTasks" : MessageLookupByLibrary.simpleMessage("完了済みTO-DO:"),
+    "statisticsCompletedTasks" : MessageLookupByLibrary.simpleMessage("未完了TO-DO:"),
     "title" : MessageLookupByLibrary.simpleMessage("TO-DO"),
     "todoList" : MessageLookupByLibrary.simpleMessage("TO-DO リスト"),
     "todoListClearCompleted" : MessageLookupByLibrary.simpleMessage("完了済みのクリア"),

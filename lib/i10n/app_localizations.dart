@@ -61,6 +61,10 @@ class AppLocalizations {
 
   String get statistics => Intl.message('Statistics', name: 'statistics');
 
+  String get statisticsActiveTasks => Intl.message('Active TO-DOs:', name: 'statisticsActiveTasks');
+
+  String get statisticsCompletedTasks => Intl.message('Completed TO-DOs:', name: 'statisticsCompletedTasks');
+
   String get settings => Intl.message('Settings', name: 'settings');
 
   String get appCategory => Intl.message('App', name: 'appCategory');
