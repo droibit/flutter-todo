@@ -114,6 +114,7 @@ class _TasksViewModel {
         },
         onClearCompletedTasksSelected: () {
           debugPrint("#onClearCompletedTasksSelected()");
+          store.dispatch(new ClearCompletedTasksAction());
         },
         onTasksSortByChanged: (newTasksSortBy) {
           if (currentTasksSortBy != newTasksSortBy) {
