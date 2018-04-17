@@ -8,6 +8,7 @@ import '../../i10n/app_localizations.dart';
 import '../../model/model.dart';
 import '../app_drawer.dart';
 import 'new_task_page.dart';
+import 'task_detail_page.dart';
 
 class TasksPage extends StatelessWidget {
   TasksPage({Key key}) : super(key: key);
@@ -347,6 +348,14 @@ class _TaskListView extends StatelessWidget {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
+        onTap: () {
+          Navigator.push(
+            context,
+            new MaterialPageRoute(
+              builder: (context) => new TaskDetailPage(task.id),
+            ),
+          );
+        },
       );
     }).toList(growable: false);
 

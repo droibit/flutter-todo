@@ -19,9 +19,9 @@ class StatisticsPage extends StatelessWidget {
           drawer: new AppDrawer(selectedNavigation: NavigationId.statistics),
           appBar: new AppBar(
             leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
-            ),
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
             title: new Text(AppLocalizations.of(context).statistics),
           ),
           body: new _StatisticsContents(tasks),
