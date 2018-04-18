@@ -67,6 +67,8 @@ class AppLocalizations {
 
   String get settings => Intl.message('Settings', name: 'settings');
 
+  String get sourceCodeTitle => Intl.message('Source code', name: 'sourceCodeTitle');
+
   String get appCategory => Intl.message('App', name: 'appCategory');
 
   String get buildVersionTitle =>

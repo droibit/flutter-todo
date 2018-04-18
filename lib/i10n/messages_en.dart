@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "newTaskTitleValidationError" : MessageLookupByLibrary.simpleMessage("Title is required."),
     "noTasks" : MessageLookupByLibrary.simpleMessage("No TO-DOs."),
     "settings" : MessageLookupByLibrary.simpleMessage("Settings"),
+    "sourceCodeTitle" : MessageLookupByLibrary.simpleMessage("Source code"),
     "statistics" : MessageLookupByLibrary.simpleMessage("Statistics"),
     "statisticsActiveTasks" : MessageLookupByLibrary.simpleMessage("Active TO-DOs:"),
     "statisticsCompletedTasks" : MessageLookupByLibrary.simpleMessage("Completed TO-DOs:"),

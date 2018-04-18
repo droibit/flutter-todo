@@ -24,6 +24,7 @@
   "statisticsCompletedTasks": "未完了TO-DO:",
   "settings": "設定",
   "appCategory": "App",
+  "sourceCodeTitle": "ソースコード",
   "buildVersionTitle": "ビルドバージョン",
   "buildVersionSubtitle": "バージョン: "
 }

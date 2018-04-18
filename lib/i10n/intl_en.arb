@@ -24,6 +24,7 @@
   "statisticsCompletedTasks": "Completed TO-DOs:",
   "settings": "Settings",
   "appCategory": "App",
+  "sourceCodeTitle": "Source code",
   "buildVersionTitle": "Build version",
   "buildVersionSubtitle": "Version: "
 }

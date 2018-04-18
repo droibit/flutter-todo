@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2018-04-17T18:02:08.635845",
+  "@@last_modified": "2018-04-18T09:37:55.823898",
   "title": "TO-DO",
   "@title": {
     "type": "text",
@@ -117,6 +117,11 @@
   },
   "settings": "Settings",
   "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sourceCodeTitle": "Source code",
+  "@sourceCodeTitle": {
     "type": "text",
     "placeholders": {}
   },

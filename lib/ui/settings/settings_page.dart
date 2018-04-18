@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../action/action.dart';
@@ -11,7 +12,6 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
     return new Scaffold(
       drawer: new AppDrawer(selectedNavigation: NavigationId.settings),
       appBar: new AppBar(
@@ -22,23 +22,47 @@ class SettingsPage extends StatelessWidget {
         title: new Text(AppLocalizations.of(context).settings),
       ),
       body: new ListView(
-        children: <Widget>[
-          // App category.
-          new Container(
-            constraints: new BoxConstraints(maxHeight: 48.0),
-            child: new Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: new Align(
-                alignment: Alignment.bottomLeft,
-                child: new Text(
-                  localizations.appCategory,
-                  style: new TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+        children: <Widget>[]..addAll(_buildAppCategory(context)),
+      ),
+    );
+  }
+
+  List<Widget> _buildAppCategory(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    return <Widget>[
+      new Container(
+        constraints: new BoxConstraints(maxHeight: 48.0),
+        child: new Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: new Align(
+            alignment: Alignment.bottomLeft,
+            child: new Text(
+              localizations.appCategory,
+              style: new TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
               ),
             ),
+          ),
+        ),
+      ),
+    ]..addAll(ListTile.divideTiles(
+        context: context,
+        tiles: <ListTile>[
+          new ListTile(
+            title: new Text(localizations.sourceCodeTitle),
+            subtitle: const Text('github.com'),
+            onTap: () async {
+              await launch(
+                'https://github.com/droibit/flutter-todo',
+                option: new CustomTabsOption(
+                  toolbarColor: Theme.of(context).primaryColor,
+                  enableDefaultShare: true,
+                  enableUrlBarHiding: true,
+                  showPageTitle: true,
+                ),
+              );
+            },
           ),
           new ListTile(
             title: new Text(localizations.buildVersionTitle),
@@ -56,7 +80,6 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
+      ));
   }
 }
