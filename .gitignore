@@ -1,18 +1,14 @@
-# Intellij project files
 *.iml
-*.ipr
-*.iws
-.idea/*
-!.idea/codeStyleSettings.xml
-!.idea/runConfigurations/*
-
-# Files and directories created by pub
+.DS_Store
+.atom/
 .dart_tool/
+.idea
+.vscode/
 .packages
 .pub/
 build/
-# Remove the following pattern if you wish to check in your lock file
+ios/.generated/
+packages
+.flutter-plugins
 pubspec.lock
-
-# Directory created by dartdoc
 doc/api/

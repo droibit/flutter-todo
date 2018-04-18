@@ -20,3 +20,6 @@ output.json
 /build
 
 .DS_Store
+
+# Flutter files
+GeneratedPluginRegistrant.java
