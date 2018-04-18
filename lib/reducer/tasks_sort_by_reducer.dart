@@ -14,7 +14,7 @@ final tasksSortByReducer = combineReducers<TasksSortBy>([
 ]);
 
 TasksSortBy _getTasksSortBy(TasksSortBy state, OnGetTaskAction action) {
-  if (action == null) {
+  if (action.tasksSortBy == null) {
     return state;
   }
   return action.tasksSortBy;

@@ -10,8 +10,7 @@ class OnGetTaskAction {
   final TasksSortBy tasksSortBy;
 
   OnGetTaskAction(this.tasks, this.tasksSortBy)
-      : assert(tasks != null),
-        assert(tasksSortBy != null);
+      : assert(tasks != null);
 }
 
 class CreateTaskAction {
