@@ -60,7 +60,7 @@ class _StatisticsViewModel {
   factory _StatisticsViewModel.from(List<Task> tasks) {
     return new _StatisticsViewModel(
       activeCount: tasks.where((t) => t.isActive).length,
-      completedCount: tasks.where((t) => !t.isActive).length,
+      completedCount: tasks.where((t) => t.completed).length,
     );
   }
 }
