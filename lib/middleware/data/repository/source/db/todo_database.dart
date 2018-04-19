@@ -14,6 +14,8 @@ abstract class TodoDatabase {
 
   Future<List<TaskEntity>> getTasks();
 
+  Future<bool> updateTask(String id, String title, String description);
+
   Future<bool> activateTask(String id);
 
   Future<bool> completeTask(String id);
@@ -66,11 +68,28 @@ class TodoDatabaseImpl implements TodoDatabase {
   }
 
   @override
+  Future<bool> updateTask(String id, String title, String description) async {
+    final db = await this.db;
+    final updateCount = await db.update(
+      TaskEntity.table,
+      {
+        TaskEntity.columnTitle: title,
+        TaskEntity.columnDescription: description
+      },
+      where: '${TaskEntity.columnId} = ?',
+      whereArgs: [id],
+    );
+    return updateCount > 0;
+  }
+
+  @override
   Future<bool> activateTask(String id) async {
     final db = await this.db;
     final updateCount = await db.update(
       TaskEntity.table,
-      {TaskEntity.columnCompleted: false},
+      {
+        TaskEntity.columnCompleted: false,
+      },
       where: "${TaskEntity.columnId} = ?",
       whereArgs: [id],
     );
@@ -82,7 +101,9 @@ class TodoDatabaseImpl implements TodoDatabase {
     final db = await this.db;
     final updateCount = await db.update(
       TaskEntity.table,
-      {TaskEntity.columnCompleted: true},
+      {
+        TaskEntity.columnCompleted: true,
+      },
       where: "${TaskEntity.columnId} = ?",
       whereArgs: [id],
     );

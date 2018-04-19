@@ -38,6 +38,10 @@ class TaskEntity {
 
   static const columnId = _id;
 
+  static const columnTitle = _title;
+
+  static const columnDescription = _description;
+
   static const columnCompleted = _completed;
 
   final String id;

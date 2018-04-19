@@ -12,6 +12,8 @@ abstract class TaskDataSource {
 
   Future<List<Task>> getTasks();
 
+  Future<bool> updateTask(String taskId, String title, String description);
+
   Future<bool> activateTask(String taskId);
 
   Future<bool> completeTask(String taskId);
@@ -57,6 +59,15 @@ class LocalTaskDataSource extends Object
   }
 
   @override
+  Future<bool> updateTask(
+      String taskId, String title, String description) async {
+    final successful = await _db.updateTask(taskId, title, description);
+    debugPrint(
+        "Update: $successful, entryId: $taskId, title: $title, desc: $description");
+    return successful;
+  }
+
+  @override
   Future<bool> completeTask(String taskId) async {
     final successful = await _db.completeTask(taskId);
     debugPrint("Complete: $successful, entryId: $taskId");
@@ -82,7 +93,6 @@ class LocalTaskDataSource extends Object
     final count = await _db.clearCompletedTask();
     debugPrint("Clear completed tasks: $count");
     return count >= 0;
-
   }
 }
 

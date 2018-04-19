@@ -9,6 +9,8 @@ abstract class TaskRepository {
 
   Future<List<Task>> getTasks();
 
+  Future<void> updateTask(String taskId, String title, String description);
+
   Future<void> activateTask(String taskId);
 
   Future<void> completeTask(String taskId);
@@ -35,6 +37,13 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<List<Task>> getTasks() async {
     final tasks = await _dataSource.getTasks();
     return new List.unmodifiable(tasks);
+  }
+
+  @override
+  Future<void> updateTask(String taskId, String title, String description) async {
+    assert(taskId != null);
+    assert(title != null);
+    await _dataSource.updateTask(taskId, title, description);
   }
 
   @override
