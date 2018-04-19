@@ -47,17 +47,23 @@ class AppLocalizations {
 
   String get newTask => Intl.message('New TO-DO', name: 'newTask');
 
-  String get newTaskTitleLabel => Intl.message('Title', name: 'newTaskTitleLabel');
-  
-  String get newTaskTitleValidationError => Intl.message('Title is required.', name: 'newTaskTitleValidationError');
-
-  String get newTaskDescLabel => Intl.message('Description', name: 'newTaskDescLabel');
-
-  String get newTaskDescHint => Intl.message('Enter your TO-DO here.', name: 'newTaskDescHint');
-
   String get newTaskFailedToCreate => Intl.message('Failed to create new TO-DO.', name: 'newTaskFailedToCreate');
 
   String get newTaskSuccessfulToCreate => Intl.message('TO-DO created.', name: 'newTaskSuccessfulToCreate');
+
+  String get editTask => Intl.message('Edit TO-DO', name: 'editTask');
+
+  String get editTaskFailedToUpdate => Intl.message('Failed to update TO-DO.', name: 'editTaskFailedToUpdate');
+
+  String get editTaskSuccessfulToUpdate => Intl.message('TO-DO updated.', name: 'editTaskSuccessfulToUpdate');
+
+  String get editTaskTitleLabel => Intl.message('Title', name: 'editTaskTitleLabel');
+
+  String get editTaskTitleValidationError => Intl.message('Title is required.', name: 'editTaskTitleValidationError');
+
+  String get editTaskDescLabel => Intl.message('Description', name: 'editTaskDescLabel');
+
+  String get editTaskDescHint => Intl.message('Enter your TO-DO here.', name: 'editTaskDescHint');
 
   String get statistics => Intl.message('Statistics', name: 'statistics');
 
@@ -71,11 +77,9 @@ class AppLocalizations {
 
   String get appCategory => Intl.message('App', name: 'appCategory');
 
-  String get buildVersionTitle =>
-      Intl.message('Build version', name: 'buildVersionTitle');
+  String get buildVersionTitle => Intl.message('Build version', name: 'buildVersionTitle');
 
-  String get buildVersionSubtitle =>
-      Intl.message('Version: ', name: 'buildVersionSubtitle');
+  String get buildVersionSubtitle => Intl.message('Version: ', name: 'buildVersionSubtitle');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

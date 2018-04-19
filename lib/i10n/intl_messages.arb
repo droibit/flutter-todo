@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2018-04-18T09:37:55.823898",
+  "@@last_modified": "2018-04-19T14:50:46.554693",
   "title": "TO-DO",
   "@title": {
     "type": "text",
@@ -70,26 +70,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "newTaskTitleLabel": "Title",
-  "@newTaskTitleLabel": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "newTaskTitleValidationError": "Title is required.",
-  "@newTaskTitleValidationError": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "newTaskDescLabel": "Description",
-  "@newTaskDescLabel": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "newTaskDescHint": "Enter your TO-DO here.",
-  "@newTaskDescHint": {
-    "type": "text",
-    "placeholders": {}
-  },
   "newTaskFailedToCreate": "Failed to create new TO-DO.",
   "@newTaskFailedToCreate": {
     "type": "text",
@@ -97,6 +77,41 @@
   },
   "newTaskSuccessfulToCreate": "TO-DO created.",
   "@newTaskSuccessfulToCreate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editTask": "Edit TO-DO",
+  "@editTask": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editTaskFailedToUpdate": "Failed to update TO-DO.",
+  "@editTaskFailedToUpdate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editTaskSuccessfulToUpdate": "TO-DO updated.",
+  "@editTaskSuccessfulToUpdate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editTaskTitleLabel": "Title",
+  "@editTaskTitleLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editTaskTitleValidationError": "Title is required.",
+  "@editTaskTitleValidationError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editTaskDescLabel": "Description",
+  "@editTaskDescLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editTaskDescHint": "Enter your TO-DO here.",
+  "@editTaskDescHint": {
     "type": "text",
     "placeholders": {}
   },

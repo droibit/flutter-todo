@@ -7,7 +7,7 @@ import '../../action/action.dart';
 import '../../i10n/app_localizations.dart';
 import '../../model/model.dart';
 import '../app_drawer.dart';
-import 'new_task_page.dart';
+import 'edit_task_page.dart';
 import 'task_detail_page.dart';
 
 class TasksPage extends StatelessWidget {
@@ -49,20 +49,18 @@ class TasksPage extends StatelessWidget {
     );
   }
 
-  void _navigateToNewTaskPage(BuildContext context) {
-    Navigator
-        .push<bool>(
+  void _navigateToNewTaskPage(BuildContext context) async {
+    final successful = await Navigator.push<bool>(
       context,
       new MaterialPageRoute(
-        builder: (context) => new NewTaskPage(),
+        builder: (context) => new EditTaskPage.newTask(),
       ),
-    )
-        .then((successful) {
-      if (successful != null && successful) {
-        _showSnackbar(
-            context, AppLocalizations.of(context).newTaskSuccessfulToCreate);
-      }
-    });
+    );
+
+    if (successful != null && successful) {
+      _showSnackbar(
+          context, AppLocalizations.of(context).newTaskSuccessfulToCreate);
+    }
   }
 
   void _showSnackbar(BuildContext context, String message) {

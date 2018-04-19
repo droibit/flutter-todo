@@ -6,6 +6,7 @@ import 'package:redux/redux.dart';
 import '../../action/action.dart';
 import '../../i10n/app_localizations.dart';
 import '../../model/model.dart';
+import 'edit_task_page.dart';
 
 class TaskDetailPage extends StatelessWidget {
   final String _taskId;
@@ -17,7 +18,7 @@ class TaskDetailPage extends StatelessWidget {
     return new StoreConnector<AppState, _TaskViewModel>(
       distinct: true,
       converter: (store) => new _TaskViewModel.from(store, _taskId),
-      builder: (context, task) {
+      builder: (context, viewModel) {
         return new Scaffold(
           appBar: new AppBar(
             leading: new IconButton(
@@ -27,14 +28,30 @@ class TaskDetailPage extends StatelessWidget {
             title: new Text(AppLocalizations.of(context).title),
             actions: <Widget>[],
           ),
-          body: new _TaskDetailView(task),
+          body: new _TaskDetailView(viewModel),
           floatingActionButton: new FloatingActionButton(
             child: new Icon(Icons.edit),
-            onPressed: () {},
+            onPressed: () {
+              _navigateToEditTaskPage(context, viewModel.task);
+            },
           ),
         );
       },
     );
+  }
+
+  void _navigateToEditTaskPage(BuildContext context, Task targetTask) async {
+    final successful = await Navigator.push<bool>(
+      context,
+      new MaterialPageRoute(
+        builder: (context) => new EditTaskPage.updateTask(targetTask),
+      ),
+    );
+
+    if (successful != null && successful) {
+      _showSnackbar(
+          context, AppLocalizations.of(context).editTaskSuccessfulToUpdate);
+    }
   }
 }
 
@@ -142,4 +159,12 @@ class _TaskDetailView extends StatelessWidget {
       ],
     );
   }
+}
+
+void _showSnackbar(BuildContext context, String message) {
+  Scaffold.of(context).showSnackBar(
+        new SnackBar(
+          content: new Text(message),
+        ),
+      );
 }
