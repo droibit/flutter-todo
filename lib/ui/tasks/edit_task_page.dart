@@ -118,7 +118,7 @@ class _EditTaskViewModel {
 
   bool get isUpdate => targetTask != null;
 
-  _EditTaskViewModel._internal({
+  _EditTaskViewModel._({
     @required this.title,
     @required this.targetTask,
     @required this.onSubmitCallback,
@@ -127,7 +127,7 @@ class _EditTaskViewModel {
 
   factory _EditTaskViewModel.from(Store<AppState> store,
       {String title, Task targetTask}) {
-    return new _EditTaskViewModel._internal(
+    return new _EditTaskViewModel._(
       title: title,
       targetTask: targetTask,
       onSubmitCallback: (title, description) {

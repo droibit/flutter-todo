@@ -60,14 +60,14 @@ class _TaskViewModel {
 
   final Function(Task, bool) onTaskCheckChanged;
 
-  _TaskViewModel._internal({
+  _TaskViewModel._({
     this.task,
     this.onTaskCheckChanged,
   })  : assert(task != null),
         assert(onTaskCheckChanged != null);
 
   factory _TaskViewModel.from(Store<AppState> store, String taskId) {
-    return new _TaskViewModel._internal(
+    return new _TaskViewModel._(
       task: store.state.tasks.firstWhere((task) => task.id == taskId),
       onTaskCheckChanged: (task, newValue) {
         if (newValue) {

@@ -11,12 +11,12 @@ class PackageProviderImpl implements PackageProvider {
 
   factory PackageProviderImpl() {
     if (_instance == null) {
-      _instance = new PackageProviderImpl._internal();
+      _instance = new PackageProviderImpl._();
     }
     return _instance;
   }
 
-  PackageProviderImpl._internal();
+  PackageProviderImpl._();
 
   @override
   Future<PackageInfo> get() => PackageInfo.fromPlatform();

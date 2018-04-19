@@ -92,7 +92,7 @@ class _TasksViewModel {
   factory _TasksViewModel.from(Store<AppState> store) {
     final currentFilter = store.state.tasksFilter;
     final currentTasksSortBy = store.state.tasksSortBy;
-    return new _TasksViewModel._internal(
+    return new _TasksViewModel._(
         tasks: _filterAndSortTask(
             store.state.tasks, currentFilter, currentTasksSortBy),
         filter: store.state.tasksFilter,
@@ -123,7 +123,7 @@ class _TasksViewModel {
         });
   }
 
-  _TasksViewModel._internal({
+  _TasksViewModel._({
     @required this.tasks,
     @required this.filter,
     @required this.tasksSortBy,
