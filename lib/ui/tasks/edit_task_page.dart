@@ -8,8 +8,6 @@ import '../../i10n/app_localizations.dart';
 import '../../model/model.dart';
 import '../../uitls/optional.dart';
 
-typedef void _OnSubmitCallback(String title, String description);
-
 class EditTaskPage extends StatefulWidget {
   final Task targetTask;
 
@@ -68,7 +66,7 @@ class EditTaskPageState extends State<EditTaskPage> {
           new _CreateTaskActionButton(
             _titleController,
             _descriptionController,
-            viewModel.onSubmitCallback,
+            viewModel.onSubmitTask,
           )
         ],
       ),
@@ -114,30 +112,35 @@ class _EditTaskViewModel {
 
   final Task targetTask;
 
-  final Function(String, String) onSubmitCallback;
+  final Function(String, String) onSubmitTask;
 
   bool get isUpdate => targetTask != null;
 
   _EditTaskViewModel._({
     @required this.title,
     @required this.targetTask,
-    @required this.onSubmitCallback,
+    @required this.onSubmitTask,
   })  : assert(title?.isNotEmpty == true),
-        assert(onSubmitCallback != null);
+        assert(onSubmitTask != null);
 
   factory _EditTaskViewModel.from(Store<AppState> store,
       {String title, Task targetTask}) {
     return new _EditTaskViewModel._(
       title: title,
       targetTask: targetTask,
-      onSubmitCallback: (title, description) {
+      onSubmitTask: (title, description) {
         if (targetTask == null) {
           store.dispatch(new CreateTaskAction(
             title: title,
             description: description,
           ));
         } else {
-          // TODO:
+          store.dispatch(new EditTaskAction(
+            targetTask.copy(
+              title: title,
+              description: description,
+            ),
+          ));
         }
       },
     );
@@ -149,20 +152,20 @@ class _CreateTaskActionButton extends StatelessWidget {
 
   final TextEditingController _descriptionController;
 
-  final _OnSubmitCallback _submitCallback;
+  final Function(String, String) _onSubmitTask;
 
   _CreateTaskActionButton(
     this._titleController,
     this._descriptionController,
-    this._submitCallback,
+    this._onSubmitTask,
   );
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, Optional<CreateTask>>(
+    return new StoreConnector<AppState, Optional<EditTask>>(
       distinct: true,
-      converter: (store) => store.state.createTask,
-      onWillChange: (createTask) => _onCreateTask(context, createTask),
+      converter: (store) => store.state.editTask,
+      onWillChange: (editTask) => _onEditTask(context, editTask),
       builder: (context, _) {
         return new IconButton(
           icon: new Icon(
@@ -176,11 +179,11 @@ class _CreateTaskActionButton extends StatelessWidget {
           },
         );
       },
-      onDispose: (store) => store.dispatch(new CreateTaskResetAction()),
+      onDispose: (store) => store.dispatch(new EditTaskResetAction()),
     );
   }
 
-  void _onCreateTask(BuildContext context, Optional<CreateTask> createTask) {
+  void _onEditTask(BuildContext context, Optional<EditTask> createTask) {
     // ignore initial state.
     createTask.ifPresent((v) {
       if (v.isSuccessful) {
@@ -189,7 +192,7 @@ class _CreateTaskActionButton extends StatelessWidget {
         _showSnackbar(
             context, AppLocalizations.of(context).newTaskFailedToCreate);
       }
-      debugPrint("_onCreateTask(isSuccessful=${v.isSuccessful})");
+      debugPrint("_onEditTask(isSuccessful=${v.isSuccessful})");
     });
   }
 
@@ -200,7 +203,7 @@ class _CreateTaskActionButton extends StatelessWidget {
       return;
     }
     debugPrint("newTask.title:$title, description: $description");
-    _submitCallback(title, description);
+    _onSubmitTask(title, description);
 
     // TODO: dismiss keyboard.
   }

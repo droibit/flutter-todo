@@ -2,6 +2,12 @@ import 'package:flutter/foundation.dart';
 
 import '../model/model.dart';
 
+class HasTask {
+  Task task;
+
+  HasTask(this.task);
+}
+
 class GetTasksAction {}
 
 class OnGetTaskAction {
@@ -24,19 +30,18 @@ class CreateTaskAction {
   }) : assert(title != null);
 }
 
-class OnCreateTaskAction {
-  final CreateTask createTask;
+class EditTaskAction extends HasTask {
 
-  OnCreateTaskAction(this.createTask) : assert(createTask != null);
+  EditTaskAction(Task task) : super(task);
 }
 
-class CreateTaskResetAction {}
+class OnEditTaskAction {
+  final EditTask editTask;
 
-class HasTask {
-  Task task;
-
-  HasTask(this.task);
+  OnEditTaskAction(this.editTask) : assert(editTask != null);
 }
+
+class EditTaskResetAction {}
 
 class CompleteTaskAction extends HasTask {
   CompleteTaskAction(Task task) : super(task);

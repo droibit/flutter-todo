@@ -14,7 +14,7 @@ class AppState {
 
   final TasksSortBy tasksSortBy;
 
-  final Optional<CreateTask> createTask;
+  final Optional<EditTask> editTask;
 
   final Optional<PackageInfo> packageInfo;
 
@@ -23,7 +23,7 @@ class AppState {
     this.tasksFilter = TasksFilter.all,
     this.tasksSortBy =
         const TasksSortBy(sortBy: SortBy.created_date, order: Order.asc),
-    this.createTask = const Optional.absent(),
+    this.editTask = const Optional.absent(),
     this.packageInfo = const Optional.absent(),
   });
 
@@ -31,15 +31,14 @@ class AppState {
     List<Task> tasks,
     TasksFilter tasksFilter,
     TasksSortBy tasksSortBy,
-    Optional<CreateTask> createTask,
+    Optional<EditTask> editTask,
     Optional<PackageInfo> packageInfo,
   }) {
-    // FIXME: Null does not overwrite the field.
     return new AppState(
       tasks: tasks ?? this.tasks,
       tasksFilter: tasksFilter ?? this.tasksFilter,
       tasksSortBy: tasksSortBy ?? this.tasksSortBy,
-      createTask: createTask ?? this.createTask,
+      editTask: editTask ?? this.editTask,
       packageInfo: packageInfo ?? this.packageInfo,
     );
   }
@@ -52,7 +51,7 @@ class AppState {
           tasks == other.tasks &&
           tasksFilter == other.tasksFilter &&
           tasksSortBy == other.tasksSortBy &&
-          createTask == other.createTask &&
+          editTask == other.editTask &&
           packageInfo == other.packageInfo;
 
   @override
@@ -60,11 +59,11 @@ class AppState {
       tasks.hashCode ^
       tasksFilter.hashCode ^
       tasksSortBy.hashCode ^
-      createTask.hashCode ^
+      editTask.hashCode ^
       packageInfo.hashCode;
 
   @override
   String toString() {
-    return 'AppState{tasks: $tasks, tasksFilter: $tasksFilter, tasksSortBy: $tasksSortBy, createTask: $createTask, packageInfo: $packageInfo}';
+    return 'AppState{tasks: $tasks, tasksFilter: $tasksFilter, tasksSortBy: $tasksSortBy, editTask: $editTask, packageInfo: $packageInfo}';
   }
 }

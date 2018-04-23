@@ -68,29 +68,38 @@ class Task {
 }
 
 @immutable
-class CreateTask {
+class EditTask {
   final Task task;
+
+  final bool isNew;
 
   // Add an error if need.
 
   bool get isSuccessful => task != null;
 
-  const CreateTask.success(this.task) : assert(task != null);
+  const EditTask.success(
+    this.task, {
+    @required this.isNew,
+  })  : assert(task != null),
+        assert(isNew != null);
 
-  const CreateTask.error() : task = null;
+  const EditTask.error()
+      : task = null,
+        isNew = null;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CreateTask &&
+      other is EditTask &&
           runtimeType == other.runtimeType &&
-          task == other.task;
+          task == other.task &&
+          isNew == other.isNew;
 
   @override
-  int get hashCode => task?.hashCode;
+  int get hashCode => task.hashCode ^ isNew.hashCode;
 
   @override
   String toString() {
-    return 'CreateTask{task: $task}';
+    return 'EditTask{task: $task, isNew: $isNew}';
   }
 }
