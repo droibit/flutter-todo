@@ -6,14 +6,17 @@ import '../model/model.dart';
 import 'data/repository/task_repository.dart';
 import 'data/repository/user_settings_repository.dart';
 
-List<Middleware<AppState>> createTaskMiddlewares(
-    TaskRepository taskRepository, UserSettingsRepository userSettingsRepository) {
+List<Middleware<AppState>> createTaskMiddlewares(TaskRepository taskRepository,
+    UserSettingsRepository userSettingsRepository) {
   return <Middleware<AppState>>[
     new TypedMiddleware<AppState, GetTasksAction>(
       _getTasksMiddleware(taskRepository, userSettingsRepository),
     ),
     new TypedMiddleware<AppState, CreateTaskAction>(
       _createTaskMiddleware(taskRepository),
+    ),
+    new TypedMiddleware<AppState, EditTaskAction>(
+      _editTaskMiddleware(taskRepository),
     ),
     new TypedMiddleware<AppState, ActivateTaskAction>(
       _activateTaskMiddleware(taskRepository),
@@ -25,13 +28,13 @@ List<Middleware<AppState>> createTaskMiddlewares(
       _completeTaskMiddleware(taskRepository),
     ),
     new TypedMiddleware<AppState, ClearCompletedTasksAction>(
-        _clearCompletedTasksMiddleware(taskRepository),
+      _clearCompletedTasksMiddleware(taskRepository),
     )
   ];
 }
 
-Middleware<AppState> _getTasksMiddleware(
-    TaskRepository taskRepository, UserSettingsRepository userSettingsRepository) {
+Middleware<AppState> _getTasksMiddleware(TaskRepository taskRepository,
+    UserSettingsRepository userSettingsRepository) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
     final tasks = taskRepository.getTasks();
     final sortBy = userSettingsRepository.loadTasksSortBy();
@@ -45,10 +48,24 @@ Middleware<AppState> _createTaskMiddleware(TaskRepository taskRepository) {
       final a = action as CreateTaskAction;
       final task = await taskRepository.createTask(a.title, a.description);
       debugPrint("Created task: $task");
-      next(new OnCreateTaskAction(new CreateTask.success(task)));
+      next(new OnEditTaskAction(new EditTask.success(task, isNew: true)));
     } on Exception catch (e) {
       debugPrint("$e");
-      next(new OnCreateTaskAction(new CreateTask.error()));
+      next(new OnEditTaskAction(new EditTask.error()));
+    }
+  };
+}
+
+Middleware<AppState> _editTaskMiddleware(TaskRepository taskRepository) {
+  return (Store<AppState> store, dynamic action, NextDispatcher next) async {
+    try {
+      final task = (action as HasTask).task;
+      await taskRepository.updateTask(task.id, task.title, task.description);
+      debugPrint("Edited task: $task");
+      next(new OnEditTaskAction(new EditTask.success(task, isNew: false)));
+    } on Exception catch (e) {
+      debugPrint("$e");
+      next(new OnEditTaskAction(new EditTask.error()));
     }
   };
 }
@@ -77,7 +94,8 @@ Middleware<AppState> _deleteTaskMiddleware(TaskRepository taskRepository) {
   };
 }
 
-Middleware<AppState> _clearCompletedTasksMiddleware(TaskRepository taskRepository) {
+Middleware<AppState> _clearCompletedTasksMiddleware(
+    TaskRepository taskRepository) {
   return (Store<AppState> store, dynamic action, NextDispatcher next) async {
     await taskRepository.clearCompletedTasks();
     next(action);

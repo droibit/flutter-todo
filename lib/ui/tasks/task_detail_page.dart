@@ -29,10 +29,14 @@ class TaskDetailPage extends StatelessWidget {
             actions: <Widget>[],
           ),
           body: new _TaskDetailView(viewModel),
-          floatingActionButton: new FloatingActionButton(
-            child: new Icon(Icons.edit),
-            onPressed: () {
-              _navigateToEditTaskPage(context, viewModel.task);
+          floatingActionButton: new Builder(
+            builder: (innerContext) {
+              return new FloatingActionButton(
+                child: new Icon(Icons.edit),
+                onPressed: () {
+                  _navigateToEditTaskPage(innerContext, viewModel.task);
+                },
+              );
             },
           ),
         );
@@ -122,20 +126,28 @@ class _TaskDetailView extends StatelessWidget {
         style: theme.textTheme.title,
       ),
     ];
-    if (task.description.isNotEmpty) {
-      taskDetail.add(new Text(
-        task.description,
-        style: theme.textTheme.subhead,
-      ));
+    if (task.description.trim().isNotEmpty) {
+      taskDetail.addAll(<Widget>[
+        new SizedBox(
+          height: 8.0,
+        ),
+        new Text(
+          task.description,
+          style: theme.textTheme.subhead,
+        )
+      ]);
     }
     return new Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         completedCheckbox,
         new Expanded(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: taskDetail,
+          child: new Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: taskDetail,
+            ),
           ),
         ),
       ],
